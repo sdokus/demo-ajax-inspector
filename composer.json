@@ -5,7 +5,7 @@
     "license": "GPL-2.0",
     "autoload": {
         "psr-4": {
-            "Demo\\AjaxInspector\\": "src/"
+            "Demo\\Ajax_Inspector\\": "src/Ajax_Inspector"
         }
     },
     "minimum-stability": "dev",

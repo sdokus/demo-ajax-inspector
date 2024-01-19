@@ -1,5 +1,5 @@
 <?php
-namespace Demo\AjaxInspector;
+namespace src\Ajax_Inspector;
 
 class Plugin {
 	public function __construct() {
