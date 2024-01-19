@@ -9,12 +9,9 @@
  */
 define( 'DEMO_PLUGIN_FILE', __FILE__ );
 
-// Load Composer autoload file.
-require_once __DIR__ . '/vendor/autoload.php';
+add_action( 'plugins_loaded', static function() {
+	// Load Composer autoload file.
+	require_once __DIR__ . '/vendor/autoload.php';
 
-/**
- * Load the action plugin
- */
-require_once dirname( DEMO_PLUGIN_FILE) . '/src/Demo/AjaxInspector/Plugin.php';
-
-new \Demo\AjaxInspector\Plugin();
+	new \Demo\AjaxInspector\Plugin();
+} );
