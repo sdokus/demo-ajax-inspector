@@ -80,9 +80,18 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 		 * @return void
 		 */
 		public function enqueue_ajax_button_script(): void {
-			wp_enqueue_script(
+			// Enqueue the CSS file.
+			wp_enqueue_style(
+				'style',
+				plugin_dir_url( __FILE__ ) . '../resources/css/style.css',
+				[],
+				'1.0'
+			);
+
+            // Enqueue the JS script.
+            wp_enqueue_script(
 				'ajax-button-script',
-				plugin_dir_url( __FILE__ ) . '../../ajax-button-script.js',
+				plugin_dir_url( __FILE__ ) . '../resources/js/ajax-button-script.js',
 				[ 'jquery' ],
 				'1.0',
 				true
@@ -95,7 +104,7 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 		public function ajax_button_shortcode() {
 			ob_start();
 			?>
-			<div style="display: flex; align-items: center; justify-content: center; margin: 0;">
+			<div class="ajax-inspector">
 				<button id="ajaxButton">Click me for AJAX</button>
 			</div>
 			<?php
