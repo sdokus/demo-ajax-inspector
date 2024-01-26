@@ -15,7 +15,7 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 	/**
 	 * The Ajax Inspector Class
 	 *
-	 * This is where the Singleton instance of the plugin is created
+	 * This is the main class of the plugin
 	 */
 	class Dokus__Ajax__Inspector {
 
@@ -43,10 +43,27 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 		 * Initializes plugin variables and sets up WordPress hooks/actions.
 		 */
 		protected function __construct() {
+			$this->enable_hooks();
+		}
+
+		/**
+		 * Enable hooks for the plugin
+		 */
+		public function enable_hooks() {
 			add_action( 'wp_enqueue_scripts', [ $this, 'add_jquery' ] );
 			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 			add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 		}
+
+		/**
+		 * Disable hooks for the plugin
+		 */
+		public function disable_hooks() {
+			remove_action( 'wp_enqueue_scripts', [ $this, 'add_jquery' ] );
+			remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
+			remove_shortcode( 'ajax_button' );
+		}
+
 
 		/**
 		 * Enqueues jquery

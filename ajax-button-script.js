@@ -1,5 +1,7 @@
 /**
- * Script for outputting the AJAX call to the console
+ * Script for outputting the AJAX response to the console
+ *
+ * @since 1.0.0
  */
 
 jQuery( document ).ready(
