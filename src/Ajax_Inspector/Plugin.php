@@ -1,17 +1,16 @@
 <?php
-
 /**
  * Plugin class file
  */
 
 namespace src\Ajax_Inspector;
 
-// Make sure that the file is being accessed in the WP environment
+// Make sure that the file is being accessed in the WP environment.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-// Make sure that the class is not being duplicated
+// Make sure that the class is not being duplicated.
 if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 	/**
 	 * The Ajax Inspector Class
@@ -49,18 +48,39 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 			add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 		}
 
-		public function add_jquery() {
+		/**
+		 * Enqueues jquery
+		 *
+		 * @return void
+		 */
+		public function add_jquery(): void {
 			wp_enqueue_script( 'jquery' );
 		}
 
-		public function enqueue_ajax_button_script() {
-			wp_enqueue_script( 'ajax-button-script', plugin_dir_url( __FILE__ ) . 'ajax-button-script.js', [ 'jquery' ], '1.0', true );
+		/**
+		 * Enqueues the custom JS script for the button
+		 *
+		 * @return void
+		 */
+		public function enqueue_ajax_button_script(): void {
+			wp_enqueue_script(
+				'ajax-button-script',
+				plugin_dir_url( __FILE__ ) . '../../ajax-button-script.js',
+				[ 'jquery' ],
+				'1.0',
+				true
+			);
 		}
 
+		/**
+		 * Creates the shortcode that outputs the button
+		 */
 		public function ajax_button_shortcode() {
 			ob_start();
 			?>
-            <button id="ajaxButton">Click me for AJAX</button>
+			<div style="display: flex; align-items: center; justify-content: center; margin: 0;">
+				<button id="ajaxButton">Click me for AJAX</button>
+			</div>
 			<?php
 			return ob_get_clean();
 		}
