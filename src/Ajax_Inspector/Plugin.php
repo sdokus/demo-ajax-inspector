@@ -104,11 +104,13 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 		public function ajax_button_shortcode() {
 			ob_start();
 			?>
-			<div class="ajax-inspector">
-				<button id="ajaxButton">Click me for AJAX</button>
-			</div>
+            <div class="ajax-inspector">
+                <button id="ajax-button">Click to Inspect AJAX</button>
+                <div id="ajax-message-container">Output: </div>
+            </div>
 			<?php
 			return ob_get_clean();
 		}
+
 	}
 }
