@@ -96,6 +96,10 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 				'1.0',
 				true
 			);
+			// Localize script with nonce to MyAjax object
+			wp_localize_script('ajax-button-script', 'ajax_button_script_vars', array(
+				'ajaxurl' => admin_url('admin-ajax.php'), // This line localizes the 'ajaxurl' variable
+			));
 		}
 
 		/**
@@ -105,7 +109,10 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 			ob_start();
 			?>
             <div class="ajax-inspector">
+                <div class="ajax-buttons">
                 <button id="ajax-button">Click to Inspect AJAX</button>
+                <button id="test-ajax-button">Click to Create an AJAX Call</button>
+                </div>
                 <div id="ajax-message-container">Output: </div>
             </div>
 			<?php
