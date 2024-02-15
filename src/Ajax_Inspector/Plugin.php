@@ -3,7 +3,7 @@
  * Plugin class file
  */
 
-namespace src\Ajax_Inspector;
+namespace SDOKUS\Ajax_Inspector;
 
 // Make sure that the file is being accessed in the WP environment.
 if ( ! defined( 'ABSPATH' ) ) {

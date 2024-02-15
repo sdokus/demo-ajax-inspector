@@ -4,11 +4,11 @@
  * Description: Creates a button that outputs the AJAX calls in a given context.
  * Version: 1.0
  * Author: Sam Dokus
- * Author URI: https://evnt.is/1x
+ * Author URI: https://www.linkedin.com/in/sam-dokus/
  * Text Domain: demo-ajax-inspector
  */
 
-use src\Ajax_Inspector\Dokus__Ajax__Inspector;
+use SDOKUS\Ajax_Inspector\Dokus__Ajax__Inspector;
 
 define( 'DEMO_PLUGIN_FILE', __FILE__ );
 
