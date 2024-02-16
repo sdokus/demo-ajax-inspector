@@ -44,14 +44,17 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 		 */
 		protected function __construct() {
 			$this->enable_hooks();
+
+            do_action( 'ajax_plugin_loaded');
 		}
 
 		/**
 		 * Enable hooks for the plugin
 		 */
 		public function enable_hooks() {
-			add_action( 'wp_enqueue_scripts', [ $this, 'add_jquery' ] );
-			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
+			add_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
+ //        add_action( 'wp_enqueue_scripts', [ $this, 'add_jquery' ] );
+//			add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 			add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 		}
 
@@ -59,47 +62,82 @@ if ( ! class_exists( 'Dokus__Ajax__Inspector' ) ) {
 		 * Disable hooks for the plugin
 		 */
 		public function disable_hooks() {
-			remove_action( 'wp_enqueue_scripts', [ $this, 'add_jquery' ] );
-			remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
+//			remove_action( 'wp_enqueue_scripts', [ $this, 'add_jquery' ] );
+//			remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 			remove_shortcode( 'ajax_button' );
 		}
 
 
-		/**
-		 * Enqueues jquery
-		 *
-		 * @return void
-		 */
-		public function add_jquery(): void {
-			wp_enqueue_script( 'jquery' );
-		}
+//		/**
+//		 * Enqueues jquery
+//		 *
+//		 * @return void
+//		 */
+//		public function add_jquery(): void {
+//			wp_enqueue_script( 'jquery' );
+//		}
+//
+//		/**
+//		 * Enqueues the custom JS script for the button
+//		 *
+//		 * @return void
+//		 */
+//		public function enqueue_ajax_button_script(): void {
+//			// Enqueue the CSS file.
+//			wp_enqueue_style(
+//				'style',
+//				plugin_dir_url( __FILE__ ) . '../resources/css/style.css',
+//				[],
+//				'1.0'
+//			);
+//
+//            // Enqueue the JS script.
+//            wp_enqueue_script(
+//				'ajax-button-script',
+//				plugin_dir_url( __FILE__ ) . '../resources/js/ajax-button-script.js',
+//				[ 'jquery' ],
+//				'1.0',
+//				true
+//			);
+//			// Localize script with nonce to MyAjax object
+//			wp_localize_script('ajax-button-script', 'ajax_button_script_vars', array(
+//				'ajaxurl' => admin_url('admin-ajax.php'), // This line localizes the 'ajaxurl' variable
+//			));
+//		}
+
+    public function load_assets (){
+	    // These ones will be enqueued on `admin_enqueue_scripts` if the conditional method on filter is met
+	    // NOTE TO SELF: need to track down this conditional (also need to think about what conditional do I want to load my plugin with?)
+	    tribe_assets(
+		    $this,
+		    [
+			    [ 'ajax-button-script', plugin_dir_url( __FILE__ ) . '../resources/js/ajax-button-script.js', [ 'jquery' ] ],
+			    [ 'ajax-style', plugin_dir_url( __FILE__ ) . '../resources/css/style.css' ],
+		    ],
+		    'admin_enqueue_scripts',
+		    [
+			    'conditionals' => [ $this, 'should_enqueue_assets' ],
+			    'localize'     => (object) [
+				    'name' => 'ajax-button-script',
+				    'data' => [
+					    'check' => wp_create_nonce( 'ajax-nonce' ),
+                        'ajax-url'  => admin_url('admin-ajax.php')
+				    ]
+                    ]
+                ]
+
+	    );
+    }
 
 		/**
-		 * Enqueues the custom JS script for the button
+		 * Checks whether the assets should be enqueued.
 		 *
-		 * @return void
+		 * @since 4.15.0
+		 *
+		 * @return boolean True if the assets should be enqueued.
 		 */
-		public function enqueue_ajax_button_script(): void {
-			// Enqueue the CSS file.
-			wp_enqueue_style(
-				'style',
-				plugin_dir_url( __FILE__ ) . '../resources/css/style.css',
-				[],
-				'1.0'
-			);
-
-            // Enqueue the JS script.
-            wp_enqueue_script(
-				'ajax-button-script',
-				plugin_dir_url( __FILE__ ) . '../resources/js/ajax-button-script.js',
-				[ 'jquery' ],
-				'1.0',
-				true
-			);
-			// Localize script with nonce to MyAjax object
-			wp_localize_script('ajax-button-script', 'ajax_button_script_vars', array(
-				'ajaxurl' => admin_url('admin-ajax.php'), // This line localizes the 'ajaxurl' variable
-			));
+		public function should_enqueue_assets() {
+			return true;
 		}
 
 		/**
