@@ -31,7 +31,7 @@ jQuery(document).ready(function ($) {
 		$(document).on('ajaxComplete.ajaxLogger', function (event, jqxhr, settings) {
 			// Append the message to the container
 			messageContainer.append('<div>AJAX request completed: ' + JSON.stringify(settings) + '</div>');
-			messageContainer.append('<div>Response: ' + jqxhr.responseText + '</div>');
+			messageContainer.append('<div >Response: ' + jqxhr.responseText + '</div>');
 			messageContainer.append('<div>Status: ' + jqxhr.status + '</div>');
 		});
 
@@ -71,13 +71,19 @@ jQuery(document).ready(function ($) {
 			type: 'GET',
 			url: ajax_button_script_vars.ajaxurl,
 			data: {
-				action: 'test_ajax_action'
-			},
-			success: function (response) {
-				console.log('Test AJAX request successful:', response);
-			},
-			error: function (xhr, status, error) {
-				console.error('Test AJAX request failed:', status, error);
+				action: 'sdokus_get_events_list',
+			}
+		});
+	});
+
+	// Event listener for get event button click
+	$('#get-events-button').click(function () {
+		// Send a test AJAX call
+		$.ajax({
+			type: 'GET',
+			url: ajax_button_script_vars.rest_url,
+			data: {
+				action: 'get_events',
 			}
 		});
 	});

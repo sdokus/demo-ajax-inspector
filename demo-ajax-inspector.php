@@ -8,17 +8,13 @@
  * Text Domain: demo-ajax-inspector
  */
 
-use SDOKUS\Ajax_Inspector\Dokus__Ajax__Inspector;
-
-define( 'DEMO_PLUGIN_FILE', __FILE__ );
+use Sdokus\Ajax_Inspector\Plugin;
 
 add_action(
 	'plugins_loaded',
 	static function () {
 		// Load Composer autoload file.
 		require_once __DIR__ . '/vendor/autoload.php';
-
-		require_once dirname( DEMO_PLUGIN_FILE ) . '/src/Ajax_Inspector/Plugin.php';
-		Dokus__Ajax__Inspector::get_instance();
+		Plugin::get_instance()->boot( __FILE__ );
 	} 
 );
