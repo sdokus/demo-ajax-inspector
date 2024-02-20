@@ -9,5 +9,11 @@
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "config": {
+        "preferred-install": "dist",
+        "platform": {
+            "php": "7.4"
+        }
+    }
 }
