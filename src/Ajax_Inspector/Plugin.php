@@ -117,7 +117,7 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function disable_hooks() {
-		remove_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
+//		remove_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
 		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		remove_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		remove_shortcode( 'ajax_button');
@@ -150,8 +150,8 @@ class Plugin {
 
 		// Localize script with nonce to MyAjax object
 		wp_localize_script( 'sdokus-ajax-inspector-buttons', 'ajax_button_script_vars', [
-			'ajaxurl'  => admin_url( 'admin-ajax.php' ), // This line localizes the 'ajaxurl' variable
-			'rest_url' => get_rest_url( null, '/tribe/events/v1/events' ),
+			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
+			'rest_url' => get_rest_url( null, '/tribe/events/v1/events/?per_page=10' ),
 		] );
 	}
 

@@ -4,12 +4,12 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready(function ($) {
+jQuery( document ).ready( function ( $ ) {
 	// Variable to keep track of whether logging is active or not
 	var isLoggingActive = false;
 
 	// Container for displaying messages on the page
-	var messageContainer = $('#ajax-message-container');
+	var messageContainer = $( '#ajax-message-container' );
 
 	/**
 	 * Toggles whether to listen or not for AJAX calls.
@@ -17,7 +17,7 @@ jQuery(document).ready(function ($) {
 	 * @since 1.0.0
 	 */
 	function toggleAjaxLogging() {
-		if (isLoggingActive) {
+		if ( isLoggingActive ) {
 			stopAjaxLogging();
 		} else {
 			startAjaxLogging();
@@ -31,23 +31,23 @@ jQuery(document).ready(function ($) {
 	 */
 	function startAjaxLogging() {
 		// If logging is not active, start it
-		$(document).on('ajaxSend.ajaxLogger', function (event, jqxhr, settings) {
+		$( document ).on( 'ajaxSend.ajaxLogger', function ( event, jqxhr, settings ) {
 			// Append the message to the container
-			messageContainer.append('<p>AJAX request started: ' + JSON.stringify(settings) + '</p>');
-		});
+			// messageContainer.append('<p>AJAX request started: ' + JSON.stringify(settings) + '</p>');
+		} );
 
-		$(document).on('ajaxComplete.ajaxLogger', function (event, jqxhr, settings) {
-			// Append the message to the container
-			messageContainer.append('<div>AJAX request completed: ' + JSON.stringify(settings) + '</div>');
-			messageContainer.append('<div >Response: ' + jqxhr.responseText + '</div>');
-			messageContainer.append('<div>Status: ' + jqxhr.status + '</div>');
-		});
+		$( document ).on( 'ajaxComplete.ajaxLogger', function ( event, jqxhr, settings ) {
+			// What is logged to the frontend
+			// messageContainer.append('<div>AJAX request completed: ' + JSON.stringify(settings) + '</div>');
+			// messageContainer.append('<div >Response: ' + jqxhr.responseText + '</div>');
+			// messageContainer.append('<div>Status: ' + jqxhr.status + '</div>');
+		} );
 
 		// Append the message to the container
-		messageContainer.append('<p>Real-time AJAX logging started</p>');
+		messageContainer.append( '<p>Real-time AJAX logging started</p>' );
 
 		// Change the button text
-		$('#ajax-button').text('Stop Listening');
+		$( '#ajax-button' ).text( 'Stop Listening' );
 		// Toggle the logging status
 		isLoggingActive = true;
 	}
@@ -59,14 +59,14 @@ jQuery(document).ready(function ($) {
 	 */
 	function stopAjaxLogging() {
 		// If logging is active, stop it
-		$(document).off('ajaxSend.ajaxLogger');
-		$(document).off('ajaxComplete.ajaxLogger');
+		$( document ).off( 'ajaxSend.ajaxLogger' );
+		$( document ).off( 'ajaxComplete.ajaxLogger' );
 
 		// Append the message to the container
-		messageContainer.append('<p>Real-time AJAX logging stopped</p>');
+		messageContainer.append( '<p>Real-time AJAX logging stopped</p>' );
 
 		// Change the button text
-		$('#ajax-button').text('Start Listening for AJAX calls');
+		$( '#ajax-button' ).text( 'Start Listening for AJAX calls' );
 		// Toggle the logging status
 		isLoggingActive = false;
 	}
@@ -76,37 +76,54 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @since 1.0.0
 	 */
-	$('#ajax-button').click(function () {
+	$( '#ajax-button' ).click( function () {
 		toggleAjaxLogging();
-	});
+	} );
 
 	/**
 	 * Listens for click on test button to create AJAX call and grab events via ORM.
 	 *
 	 * @since 1.0.0
 	 */
-	$('#test-ajax-button').click(function () {
-		$.ajax({
+	$( '#test-ajax-button' ).click( function () {
+		$.ajax( {
 			type: 'GET',
 			url: ajax_button_script_vars.ajaxurl,
 			data: {
 				action: 'sdokus_get_events_list',
 			}
-		});
-	});
+		} );
+	} );
 
 	/**
 	 * Listens for click on button to create an AJAX call and grab events via TEC API.
 	 *
 	 * @since 1.0.0
 	 */
-	$('#get-events-button').click(function () {
-		$.ajax({
-			type: 'GET',
-			url: ajax_button_script_vars.rest_url,
-			data: {
-				action: 'get_events',
-			}
-		});
-	});
-});
+	$( '#get-events-button' ).click( function () {
+		$.ajax( {
+				method: 'GET',
+				url: ajax_button_script_vars.rest_url,
+				data: {
+					action: 'sdokus_get_events',
+					'page': 1,
+					'per_page': 10,
+				}
+			} )
+			.done( renderEvents );
+	} );
+
+	/**
+	 * Outputs just the title and date of each event in the response
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param response
+	 */
+	var renderEvents = function ( response ) {
+		for ( var event of response.events ) {
+			messageContainer.append( '<li>' + event.title + '</li>' );
+		}
+
+	};
+} );
