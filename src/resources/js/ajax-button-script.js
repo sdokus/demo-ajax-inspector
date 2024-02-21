@@ -1,5 +1,5 @@
 /**
- * Script for starting and stopping real-time logging of AJAX calls
+ * Script for starting and stopping real-time logging of AJAX calls.
  *
  * @since 1.0.0
  */
@@ -11,7 +11,11 @@ jQuery(document).ready(function ($) {
 	// Container for displaying messages on the page
 	var messageContainer = $('#ajax-message-container');
 
-	// Function to start or stop real-time logging
+	/**
+	 * Toggles whether to listen or not for AJAX calls.
+	 *
+	 * @since 1.0.0
+	 */
 	function toggleAjaxLogging() {
 		if (isLoggingActive) {
 			stopAjaxLogging();
@@ -20,7 +24,11 @@ jQuery(document).ready(function ($) {
 		}
 	}
 
-	// Function to start real-time logging
+	/**
+	 * Starts logging AJAX calls.
+	 *
+	 * @since 1.0.0
+	 */
 	function startAjaxLogging() {
 		// If logging is not active, start it
 		$(document).on('ajaxSend.ajaxLogger', function (event, jqxhr, settings) {
@@ -44,7 +52,11 @@ jQuery(document).ready(function ($) {
 		isLoggingActive = true;
 	}
 
-	// Function to stop real-time logging
+	/**
+	 * Stops logging AJAX calls.
+	 *
+	 * @since 1.0.0
+	 */
 	function stopAjaxLogging() {
 		// If logging is active, stop it
 		$(document).off('ajaxSend.ajaxLogger');
@@ -59,14 +71,21 @@ jQuery(document).ready(function ($) {
 		isLoggingActive = false;
 	}
 
-	// Event listener for button click
+	/**
+	 * Listens for click on button to toggle listening for AJAX calls.
+	 *
+	 * @since 1.0.0
+	 */
 	$('#ajax-button').click(function () {
 		toggleAjaxLogging();
 	});
 
-	// Event listener for test button click
+	/**
+	 * Listens for click on test button to create AJAX call and grab events via ORM.
+	 *
+	 * @since 1.0.0
+	 */
 	$('#test-ajax-button').click(function () {
-		// Send a test AJAX call
 		$.ajax({
 			type: 'GET',
 			url: ajax_button_script_vars.ajaxurl,
@@ -76,9 +95,12 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
-	// Event listener for get event button click
+	/**
+	 * Listens for click on button to create an AJAX call and grab events via TEC API.
+	 *
+	 * @since 1.0.0
+	 */
 	$('#get-events-button').click(function () {
-		// Send a test AJAX call
 		$.ajax({
 			type: 'GET',
 			url: ajax_button_script_vars.rest_url,

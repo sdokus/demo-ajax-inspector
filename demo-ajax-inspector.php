@@ -11,7 +11,7 @@
 use Sdokus\Ajax_Inspector\Plugin;
 
 /**
- * Action to load the plugin
+ * Loads the plugin class.
  *
  * @since 1.0.0
  *

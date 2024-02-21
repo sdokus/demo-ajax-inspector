@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin class service provider to bootstrap the plugin
+ * Plugin class service provider to bootstrap the plugin.
  *
  * @since 1.0.0
  */
@@ -8,9 +8,9 @@
 namespace Sdokus\Ajax_Inspector;
 
 /**
- * The Ajax Inspector Class
+ * The Ajax Inspector Class.
  *
- * This is the main class of the plugin
+ * This is the main class of the plugin.
  *
  * @since 1.0.0
  */
@@ -45,7 +45,7 @@ class Plugin {
 	public string $plugin_url;
 
 	/**
-	 * Static Singleton Holder
+	 * Static Singleton Holder.
 	 *
 	 * @since 1.0.0
 	 *
@@ -54,7 +54,7 @@ class Plugin {
 	protected static Plugin $instance;
 
 	/**
-	 * Get (and instantiate, if necessary) the instance of the class
+	 * Gets (and instantiates, if necessary) the instance of the class.
 	 *
 	 * @since 1.0.0
 	 *
@@ -80,7 +80,7 @@ class Plugin {
 	}
 
 	/**
-	 * Boots up the plugin
+	 * Boots up the plugin.
 	 *
 	 * @since 1.0.0
 	 *
@@ -100,7 +100,7 @@ class Plugin {
 	}
 
 	/**
-	 * Enable hooks for the plugin
+	 * Enables hooks for the plugin.
 	 *
 	 * @since 1.0.0
 	 */
@@ -112,7 +112,7 @@ class Plugin {
 	}
 
 	/**
-	 * Disable hooks for the plugin
+	 * Disables hooks for the plugin.
 	 *
 	 * @since 1.0.0
 	 */
@@ -122,7 +122,7 @@ class Plugin {
 	}
 
 	/**
-	 * Enqueues the custom JS script for the button
+	 * Enqueues the custom JS script for the button.
 	 *
 	 * @since 1.0.0
 	 *
@@ -154,7 +154,7 @@ class Plugin {
 	}
 
 	/**
-     * Uses the TEC ORM to retrieve events and send back as JSON response
+     * Uses the TEC ORM to retrieve events and send back as JSON response.
      *
      * @since 1.0.0
      *
@@ -175,20 +175,20 @@ class Plugin {
 	}
 
 	/**
-	 * Creates the shortcode that outputs the button
+	 * Creates the shortcode that outputs the button.
      *
      * @since 1.0.0
 	 */
-	public function ajax_button_shortcode(): bool|string {
+	public function ajax_button_shortcode() {
 		ob_start();
 		?>
         <div class="ajax-inspector">
             <div class="ajax-buttons">
-                <button id="ajax-button">Click to Inspect AJAX</button>
-                <button id="test-ajax-button">Click to Create an AJAX Call</button>
-                <button id="get-events-button">Click to GET all Events</button>
+                <button id="ajax-button"><?php esc_html_e('Click to Listen for AJAX', 'demo-ajax-inspector'); ?></button>
+                <button id="test-ajax-button"><?php esc_html_e('Click to do a WP AJAX Call', 'demo-ajax-inspector'); ?></button>
+                <button id="get-events-button"><?php esc_html_e('Click to do an API Call', 'demo-ajax-inspector'); ?></button>
             </div>
-            <div id="ajax-message-container">Output:</div>
+            <div id="ajax-message-container"><?php esc_html_e('Output:', 'demo-ajax-inspector'); ?></div>
         </div>
 		<?php
 		return ob_get_clean();
