@@ -117,8 +117,10 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function disable_hooks() {
+		remove_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
 		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
-		remove_shortcode( 'ajax_button' );
+		remove_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
+		remove_shortcode( 'ajax_button');
 	}
 
 	/**
