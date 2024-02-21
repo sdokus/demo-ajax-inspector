@@ -10,6 +10,13 @@
 
 use Sdokus\Ajax_Inspector\Plugin;
 
+/**
+ * Action to load the plugin
+ *
+ * @since 1.0.0
+ *
+ * @version TBD
+ */
 add_action(
 	'plugins_loaded',
 	static function () {

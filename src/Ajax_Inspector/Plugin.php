@@ -1,6 +1,8 @@
 <?php
 /**
- * Plugin class file
+ * Plugin class service provider to bootstrap the plugin
+ *
+ * @since 1.0.0
  */
 
 namespace Sdokus\Ajax_Inspector;
@@ -9,16 +11,43 @@ namespace Sdokus\Ajax_Inspector;
  * The Ajax Inspector Class
  *
  * This is the main class of the plugin
+ *
+ * @since 1.0.0
  */
 class Plugin {
 
+	/**
+	 * @since 1.0.0
+	 *
+	 * @var string Plugin File.
+	 */
 	public string $plugin_file;
+
+	/**
+	 * @since 1.0.0
+	 *
+	 * @var string Plugin Directory.
+	 */
 	public string $plugin_dir;
+
+	/**
+	 * @since 1.0.0
+	 *
+	 * @var string Plugin Path.
+	 */
 	public string $plugin_path;
+
+	/**
+	 * @since 1.0.0
+	 *
+	 * @var string Plugin URL.
+	 */
 	public string $plugin_url;
 
 	/**
 	 * Static Singleton Holder
+	 *
+	 * @since 1.0.0
 	 *
 	 * @var self
 	 */
@@ -26,6 +55,8 @@ class Plugin {
 
 	/**
 	 * Get (and instantiate, if necessary) the instance of the class
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return self
 	 */
@@ -40,12 +71,19 @@ class Plugin {
 
 	/**
 	 * Initializes plugin variables and sets up WordPress hooks/actions.
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	protected function __construct() {
 		// Intentionally empty.
 	}
 
 	/**
+	 * Boots up the plugin
+	 *
+	 * @since 1.0.0
+	 *
 	 * @param string $file
 	 *
 	 * @return void
@@ -63,6 +101,8 @@ class Plugin {
 
 	/**
 	 * Enable hooks for the plugin
+	 *
+	 * @since 1.0.0
 	 */
 	public function enable_hooks() {
 //		add_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
@@ -73,6 +113,8 @@ class Plugin {
 
 	/**
 	 * Disable hooks for the plugin
+	 *
+	 * @since 1.0.0
 	 */
 	public function disable_hooks() {
 		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
@@ -81,6 +123,8 @@ class Plugin {
 
 	/**
 	 * Enqueues the custom JS script for the button
+	 *
+	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -101,6 +145,7 @@ class Plugin {
 			'1.0',
 			true
 		);
+
 		// Localize script with nonce to MyAjax object
 		wp_localize_script( 'sdokus-ajax-inspector-buttons', 'ajax_button_script_vars', [
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ), // This line localizes the 'ajaxurl' variable
@@ -108,8 +153,15 @@ class Plugin {
 		] );
 	}
 
+	/**
+     * Uses the TEC ORM to retrieve events and send back as JSON response
+     *
+     * @since 1.0.0
+     *
+	 * @return void
+	 */
 	public function get_events_callback() {
-		// TODO: Get events here using ORM and send response as JSON
+		// @todo Get events here using ORM and send response as JSON
 		if ( isset( $_POST['action'] ) ) {
 			$action = sanitize_text_field( $_POST['action'] );
 
@@ -119,13 +171,15 @@ class Plugin {
 			wp_send_json( $output );
 		}
 
-		wp_die(); // Always include this line to terminate the script
+		wp_die();
 	}
 
 	/**
 	 * Creates the shortcode that outputs the button
+     *
+     * @since 1.0.0
 	 */
-	public function ajax_button_shortcode() {
+	public function ajax_button_shortcode(): bool|string {
 		ob_start();
 		?>
         <div class="ajax-inspector">
