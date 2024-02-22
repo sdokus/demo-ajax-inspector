@@ -89,14 +89,17 @@ class Plugin {
 	 * @return void
 	 */
 	public function boot( string $file ): void {
-		$this->enable_hooks();
+		// Sets up the hooks for the plugin.
+        $this->enable_hooks();
 
+		// Set up the plugin provider properties.
 		$this->plugin_file = $file;
 		$this->plugin_path = trailingslashit( dirname( $this->plugin_file ) );
 		$this->plugin_dir  = trailingslashit( basename( $this->plugin_path ) );
 		$this->plugin_url  = str_replace( basename( $this->plugin_file ), '', plugins_url( basename( $this->plugin_file ), $this->plugin_file ) );
 
-		do_action( 'ajax_plugin_loaded' );
+        // Now that the plugin is set up, enqueue the assets.
+		do_action( 'sdokus_ajax_plugin_loaded' );
 	}
 
 	/**
@@ -105,7 +108,7 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function enable_hooks() {
-//		add_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
+		add_action( 'sdokus_ajax_plugin_loaded', [$this, 'load_assets'] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
@@ -117,10 +120,10 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function disable_hooks() {
-//		remove_action( 'ajax_plugin_loaded', [$this, 'load_assets'] );
+		remove_action( 'sdokus_ajax_plugin_loaded', [$this, 'load_assets'] );
 		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		remove_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
-		remove_shortcode( 'ajax_button');
+		remove_shortcode( 'ajax_button' );
 	}
 
 	/**
@@ -156,40 +159,35 @@ class Plugin {
 	}
 
 	/**
-     * Uses the TEC ORM to retrieve events and send back as JSON response.
-     *
-     * @since 1.0.0
-     *
+	 * Uses the TEC ORM to retrieve events and send back as JSON response.
+	 *
+	 * @since 1.0.0
+	 *
 	 * @return void
 	 */
 	public function get_events_callback() {
-		// @todo Get events here using ORM and send response as JSON
 		if ( isset( $_GET['action'] ) ) {
-
-            $events = tribe_events()->per_page(10)->page(1)->all();
-
-			// Return the result to the AJAX request
+			$events = tribe_events()->per_page( 10 )->page( 1 )->all();
 			wp_send_json( $events );
 		}
-
 		wp_die();
 	}
 
 	/**
 	 * Creates the shortcode that outputs the button.
-     *
-     * @since 1.0.0
+	 *
+	 * @since 1.0.0
 	 */
 	public function ajax_button_shortcode() {
 		ob_start();
 		?>
         <div class="ajax-inspector">
             <div class="ajax-buttons">
-                <button id="ajax-button"><?php esc_html_e('Click to Listen for AJAX', 'demo-ajax-inspector'); ?></button>
-                <button id="test-ajax-button"><?php esc_html_e('Click to do a WP AJAX Call', 'demo-ajax-inspector'); ?></button>
-                <button id="get-events-button"><?php esc_html_e('Click to do an API Call', 'demo-ajax-inspector'); ?></button>
+                <button id="ajax-button"><?php esc_html_e( 'Click to Listen for AJAX', 'demo-ajax-inspector' ); ?></button>
+                <button id="test-ajax-button"><?php esc_html_e( 'Click to do a WP AJAX Call', 'demo-ajax-inspector' ); ?></button>
+                <button id="get-events-button"><?php esc_html_e( 'Click to do an API Call', 'demo-ajax-inspector' ); ?></button>
             </div>
-            <div id="ajax-message-container"><?php esc_html_e('Output:', 'demo-ajax-inspector'); ?></div>
+            <div id="ajax-message-container"><?php esc_html_e( 'Output:', 'demo-ajax-inspector' ); ?></div>
         </div>
 		<?php
 		return ob_get_clean();
