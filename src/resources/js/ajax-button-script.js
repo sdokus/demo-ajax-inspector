@@ -87,12 +87,13 @@ jQuery( document ).ready( function ( $ ) {
 	 */
 	$( '#test-ajax-button' ).click( function () {
 		$.ajax( {
-			type: 'GET',
+			method: 'GET',
 			url: ajax_button_script_vars.ajaxurl,
 			data: {
 				action: 'sdokus_get_events_list',
 			}
-		} );
+		} )
+		.done( renderEvents );
 	} );
 
 	/**
@@ -105,7 +106,6 @@ jQuery( document ).ready( function ( $ ) {
 				method: 'GET',
 				url: ajax_button_script_vars.rest_url,
 				data: {
-					action: 'sdokus_get_events',
 					'page': 1,
 					'per_page': 10,
 				}
@@ -121,9 +121,16 @@ jQuery( document ).ready( function ( $ ) {
 	 * @param response
 	 */
 	var renderEvents = function ( response ) {
-		for ( var event of response.events ) {
-			messageContainer.append( '<li>' + event.title + ' happening on ' + event.date + '</li>' );
+		if (response.events){
+			for ( var event of response.events ) {
+				messageContainer.append( '<li>' + event.title + ' happening on ' + event.date + '</li>' );
+			}
+		} else {
+			for ( var event of response ) {
+				messageContainer.append( '<li>' + event.title + ' happening on ' + event.start_date + '</li>' );
+			}
 		}
+
 
 	};
 } );

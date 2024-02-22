@@ -164,13 +164,12 @@ class Plugin {
 	 */
 	public function get_events_callback() {
 		// @todo Get events here using ORM and send response as JSON
-		if ( isset( $_POST['action'] ) ) {
-			$action = sanitize_text_field( $_POST['action'] );
+		if ( isset( $_GET['action'] ) ) {
 
-			$output = $action;
+            $events = tribe_events()->per_page(10)->page(1)->all();
 
 			// Return the result to the AJAX request
-			wp_send_json( $output );
+			wp_send_json( $events );
 		}
 
 		wp_die();
