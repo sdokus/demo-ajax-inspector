@@ -183,11 +183,11 @@ class Plugin {
 		?>
         <div class="ajax-inspector">
             <div class="ajax-buttons">
-                <button id="ajax-button"><?php esc_html_e( 'Click to Listen for AJAX', 'demo-ajax-inspector' ); ?></button>
-                <button id="test-ajax-button"><?php esc_html_e( 'Click to do a WP AJAX Call', 'demo-ajax-inspector' ); ?></button>
-                <button id="get-events-button"><?php esc_html_e( 'Click to do an API Call', 'demo-ajax-inspector' ); ?></button>
+                <button id="ajax-button"><?php esc_html_e( 'Click to Listen for AJAX', 'sdokus-demo-ajax-inspector' ); ?></button>
+                <button id="test-ajax-button"><?php esc_html_e( 'Click to do a WP AJAX Call', 'sdokus-demo-ajax-inspector' ); ?></button>
+                <button id="get-events-button"><?php esc_html_e( 'Click to do an API Call', 'sdokus-demo-ajax-inspector' ); ?></button>
             </div>
-            <div id="ajax-message-container"><?php esc_html_e( 'Output:', 'demo-ajax-inspector' ); ?></div>
+            <div id="ajax-message-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></div>
         </div>
 		<?php
 		return ob_get_clean();

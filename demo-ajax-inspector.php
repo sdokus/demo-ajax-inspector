@@ -5,7 +5,7 @@
  * Version: 1.0
  * Author: Sam Dokus
  * Author URI: https://www.linkedin.com/in/sam-dokus/
- * Text Domain: demo-ajax-inspector
+ * Text Domain: sdokus-demo-ajax-inspector
  */
 
 use Sdokus\Ajax_Inspector\Plugin;
