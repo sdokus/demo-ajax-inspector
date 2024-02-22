@@ -122,7 +122,7 @@ jQuery( document ).ready( function ( $ ) {
 	 */
 	var renderEvents = function ( response ) {
 		for ( var event of response.events ) {
-			messageContainer.append( '<li>' + event.title + '</li>' );
+			messageContainer.append( '<li>' + event.title + ' happening on ' + event.date + '</li>' );
 		}
 
 	};
