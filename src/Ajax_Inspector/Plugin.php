@@ -183,7 +183,6 @@ class Plugin {
 		?>
         <div class="ajax-inspector">
             <div class="ajax-buttons">
-                <button id="ajax-button"><?php esc_html_e( 'Click to Listen for AJAX', 'sdokus-demo-ajax-inspector' ); ?></button>
                 <button id="test-ajax-button"><?php esc_html_e( 'Click to do a WP AJAX Call', 'sdokus-demo-ajax-inspector' ); ?></button>
                 <button id="get-events-button"><?php esc_html_e( 'Click to do an API Call', 'sdokus-demo-ajax-inspector' ); ?></button>
             </div>
