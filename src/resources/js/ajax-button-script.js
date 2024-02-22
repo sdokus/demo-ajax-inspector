@@ -30,18 +30,9 @@ jQuery( document ).ready( function ( $ ) {
 	 * @since 1.0.0
 	 */
 	function startAjaxLogging() {
-		// If logging is not active, start it
-		$( document ).on( 'ajaxSend.ajaxLogger', function ( event, jqxhr, settings ) {
-			// Append the message to the container
-			// messageContainer.append('<p>AJAX request started: ' + JSON.stringify(settings) + '</p>');
-		} );
-
-		$( document ).on( 'ajaxComplete.ajaxLogger', function ( event, jqxhr, settings ) {
-			// What is logged to the frontend
-			// messageContainer.append('<div>AJAX request completed: ' + JSON.stringify(settings) + '</div>');
-			// messageContainer.append('<div >Response: ' + jqxhr.responseText + '</div>');
-			// messageContainer.append('<div>Status: ' + jqxhr.status + '</div>');
-		} );
+		// If logging is not active, turn it on
+		$( document ).on( 'ajaxSend.ajaxLogger' );
+		$( document ).on( 'ajaxComplete.ajaxLogger' );
 
 		// Append the message to the container
 		messageContainer.append( '<p>Real-time AJAX logging started</p>' );
