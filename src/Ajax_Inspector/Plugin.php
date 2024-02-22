@@ -108,7 +108,7 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	public function enable_hooks() {
-		add_action( 'sdokus_ajax_plugin_loaded', [$this, 'load_assets'] );
+	//	add_action( 'sdokus_ajax_plugin_loaded', [$this, 'load_assets'] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
@@ -168,7 +168,7 @@ class Plugin {
 	public function get_events_callback() {
 		if ( isset( $_GET['action'] ) ) {
 			$events = tribe_events()->per_page( 10 )->page( 1 )->all();
-			wp_send_json( $events );
+			wp_send_json( [ 'events' => $events ] );
 		}
 		wp_die();
 	}

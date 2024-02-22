@@ -112,16 +112,8 @@ jQuery( document ).ready( function ( $ ) {
 	 * @param response
 	 */
 	var renderEvents = function ( response ) {
-		if (response.events){
-			for ( var event of response.events ) {
-				messageContainer.append( '<li>' + event.title + ' happening on ' + event.date + '</li>' );
-			}
-		} else {
-			for ( var event of response ) {
-				messageContainer.append( '<li>' + event.title + ' happening on ' + event.start_date + '</li>' );
-			}
+		for ( var event of response.events ) {
+			messageContainer.append( '<li>' + event.title + ' happening on ' + event.start_date + '</li>' );
 		}
-
-
-	};
+	}
 } );
