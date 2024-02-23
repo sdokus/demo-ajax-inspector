@@ -7,6 +7,7 @@
 jQuery( document ).ready( function ( $ ) {
 	// Container for displaying messages on the page
 	var messageContainer = $( '#ajax-message-container' );
+	const i18n = window.i18n;
 
 	/**
 	 * Listens for click on test button to create AJAX call and grab events via ORM.
