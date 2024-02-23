@@ -157,6 +157,9 @@ class Plugin {
 			'rest_url' => get_rest_url( null, '/tribe/events/v1/events/?per_page=10' ),
 			'event_happening_label' => esc_html__( '%1$s happening on %2$s', 'sdokus-ajax-inspector' )
 		] );
+
+		// Set up translations for the script
+		wp_set_script_translations( 'sdokus-ajax-inspector-buttons', 'sdokus-ajax-inspector' );
 	}
 
 	/**
