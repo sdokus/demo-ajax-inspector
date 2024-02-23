@@ -146,7 +146,7 @@ class Plugin {
 		wp_enqueue_script(
 			'sdokus-ajax-inspector-buttons',
 			$this->plugin_url . 'src/resources/js/ajax-button-script.js',
-			[ 'jquery' ],
+			[ 'jquery', 'wp-i18n' ],
 			'1.0',
 			true
 		);
