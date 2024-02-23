@@ -48,9 +48,11 @@ jQuery( document ).ready( function ( $ ) {
 	 *
 	 * @param response
 	 */
-	var renderEvents = function ( response ) {
-		for ( var event of response.events ) {
-			messageContainer.append( '<li>' + event.title + ' happening on ' + event.start_date + '</li>' );
+	let renderEvents = function ( response ) {
+		for (let event of response.events) {
+			let listItem = $('<li></li>');
+			listItem.html(event.title + ' happening on ' + event.start_date);
+			messageContainer.append(listItem);
 		}
 	}
 } );
