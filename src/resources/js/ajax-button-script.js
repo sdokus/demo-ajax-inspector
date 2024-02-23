@@ -51,7 +51,7 @@ jQuery( document ).ready( function ( $ ) {
 	let renderEvents = function ( response ) {
 		for (let event of response.events) {
 			let listItem = $('<li></li>');
-			listItem.html(event.title + ' happening on ' + event.start_date);
+			listItem.html( i18n.sprintf( ajax_button_script_vars.event_happening_label, event.title, event.start_date ) );
 			messageContainer.append(listItem);
 		}
 	}

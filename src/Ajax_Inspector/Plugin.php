@@ -155,6 +155,7 @@ class Plugin {
 		wp_localize_script( 'sdokus-ajax-inspector-buttons', 'ajax_button_script_vars', [
 			'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 			'rest_url' => get_rest_url( null, '/tribe/events/v1/events/?per_page=10' ),
+			'event_happening_label' => esc_html__( '%1$s happening on %2$s', 'sdokus-ajax-inspector' )
 		] );
 	}
 
