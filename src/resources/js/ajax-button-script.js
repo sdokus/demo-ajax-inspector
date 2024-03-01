@@ -6,7 +6,9 @@
 
 jQuery( document ).ready( function ( $ ) {
 	// Container for displaying messages on the page
-	var messageContainer = $( '#ajax-message-container' );
+	let messageContainer = $( '#ajax-message-container' );
+
+	// Grab the internationalization object - there's an issue happening here where it is not properly finding this, so I temporarily removed it from renderEvents() below
 	const i18n = window.i18n;
 
 	/**
@@ -33,10 +35,12 @@ jQuery( document ).ready( function ( $ ) {
 	$( '#get-events-button' ).click( function () {
 		$.ajax( {
 				method: 'GET',
-				url: ajax_button_script_vars.rest_url,
+				url: ajax_button_script_vars.rest_endpoint.events,
+				beforeSend: function( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', ajax_button_script_vars.nonce );
+				},
 				data: {
-					'page': 1,
-					'per_page': 10,
+					action: 'sdokus_api_get_events_list',
 				}
 			} )
 			.done( renderEvents );
@@ -52,7 +56,7 @@ jQuery( document ).ready( function ( $ ) {
 	let renderEvents = function ( response ) {
 		for (let event of response.events) {
 			let listItem = $('<li></li>');
-			listItem.html( i18n.sprintf( ajax_button_script_vars.event_happening_label, event.title, event.start_date ) );
+			listItem.html( sprintf( ajax_button_script_vars.event_happening_label, event.title, event.start_date ) );
 			messageContainer.append(listItem);
 		}
 	}
