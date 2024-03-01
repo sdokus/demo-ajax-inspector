@@ -190,7 +190,7 @@ class Plugin {
 	public function ajax_button_shortcode() {
 		ob_start();
 		?>
-        <div class="ajax-inspector">
+        <div class="sdokus-ajax-inspector">
             <h3><?php esc_html_e( 'AJAX Demo', 'sdokus-demo-ajax-inspector' ); ?></h3>
             <div class="request">
                 <div>
@@ -205,8 +205,8 @@ class Plugin {
                 <div id="orm-fields" class="ajax-fields">
                     <label for="orm-field1"><?php esc_html_e( 'ORM Field 1:', 'sdokus-demo-ajax-inspector' ); ?></label>
                     <input type="text" name="orm-field1" id="orm-field1">
-                    <div class="ajax-buttons">
-                        <button id="test-ajax-button"><?php esc_html_e( 'Get Events using TEC ORM', 'sdokus-demo-ajax-inspector' ); ?></button>
+                    <div class="sdokus-ajax-buttons">
+                        <button id="sdokus-ajax-orm-button"><?php esc_html_e( 'Get Events using TEC ORM', 'sdokus-demo-ajax-inspector' ); ?></button>
                     </div>
                 </div>
 
@@ -214,12 +214,13 @@ class Plugin {
                 <div id="api-fields" class="ajax-fields" style="display: none;">
                     <label for="api-field1"><?php esc_html_e( 'API Field 1:', 'sdokus-demo-ajax-inspector' ); ?></label>
                     <input type="text" name="api-field1" id="api-field1">
-                    <div class="ajax-buttons">
-                        <button id="get-events-button"><?php esc_html_e( 'Get Events using TEC API', 'sdokus-demo-ajax-inspector' ); ?></button>
+                    <div class="sdokus-ajax-buttons">
+                        <button id="sdokus-ajax-api-button"><?php esc_html_e( 'Get Events using TEC API', 'sdokus-demo-ajax-inspector' ); ?></button>
                     </div>
                 </div>
 
-                <div id="ajax-message-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></div>
+                <label for="sdokus-ajax-message-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
+                <div id="sdokus-ajax-message-container"></div>
             </div>
         </div>
 		<?php

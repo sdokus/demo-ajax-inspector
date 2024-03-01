@@ -6,7 +6,7 @@
 
 jQuery( document ).ready( function ( $ ) {
 	// Container for displaying messages on the page
-	let messageContainer = $( '#ajax-message-container' );
+	let messageContainer = $( '#sdokus-ajax-message-container' );
 
 	// Grab the internationalization object - there's an issue happening here where it is not properly finding this, so I temporarily removed it from renderEvents() below
 	const i18n = window.i18n;
@@ -19,10 +19,10 @@ jQuery( document ).ready( function ( $ ) {
 	function toggleFields() {
 		ormFields.toggle(select.val() === 'orm');
 		apiFields.toggle(select.val() === 'api');
-	}
 
-	// Initial toggle
-	toggleFields();
+		// Clear the message container when fields are toggled
+		messageContainer.empty();
+	}
 
 	// Add event listener to update fields on select change
 	select.on('change', toggleFields);
@@ -33,7 +33,7 @@ jQuery( document ).ready( function ( $ ) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#test-ajax-button' ).click( function () {
+	$( '#sdokus-ajax-orm-button' ).click( function () {
 		$.ajax( {
 			method: 'GET',
 			url: ajax_button_script_vars.ajaxurl,
@@ -49,7 +49,7 @@ jQuery( document ).ready( function ( $ ) {
 	 *
 	 * @since 1.0.0
 	 */
-	$( '#get-events-button' ).click( function () {
+	$( '#sdokus-ajax-api-button' ).click( function () {
 		$.ajax( {
 				method: 'GET',
 				url: ajax_button_script_vars.rest_endpoint.events,
