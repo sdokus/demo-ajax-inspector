@@ -7,11 +7,10 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	height: 600px;
 }
 
-.sdokus-ajax-parameters {
-
+.sdokus-ajax-request-method {
+	padding:20px;
 }
 
 .sdokus-ajax-buttons {

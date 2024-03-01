@@ -110,16 +110,8 @@ class Plugin {
 	public function enable_hooks() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
+		add_action( 'admin_menu', [ $this, 'add_shortcode_menu_page' ] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
-		add_menu_page(
-			'AJAX Demo',
-			'AJAX Demo',
-			'administrator',
-			'ajax-demo',
-			'',
-			'',
-			100
-		);
 	}
 
 	/**
@@ -131,6 +123,33 @@ class Plugin {
 		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		remove_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		remove_shortcode( 'ajax_button' );
+	}
+
+	/**
+	 * Adds a menu page to the WordPress dashboard.
+	 */
+	function add_shortcode_menu_page() {
+		// Use add_menu_page for a top-level menu page or add_submenu_page for a submenu page
+		add_menu_page(
+			'AJAX Demo',
+			'AJAX Demo',
+			'administrator',
+			'ajax-demo',
+			[ $this, 'render' ],
+		);
+	}
+
+	/**
+	 * Callback function to render the shortcode content on a menu page.
+	 */
+	function render() {
+		?>
+        <div>
+            <h1><?php esc_html_e( 'Create AJAX Calls to Grab Events!', 'sdokus-ajax-inspector' ); ?></h1>
+
+			<?php echo do_shortcode( '[ajax_button]' ); ?>
+        </div>
+		<?php
 	}
 
 	public function enqueue_ajax_button_script(): void {
@@ -176,10 +195,10 @@ class Plugin {
 	 */
 	public function get_events_callback() {
 		if ( isset( $_GET['action'] ) ) {
-			$per_page = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
-            $starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : "";
+			$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
+			$starts_after = $_GET['starts_after'] ?? "01 January 1970";
 
-			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after' , $starts_after )->all();
+			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
 
 			wp_send_json( [ 'events' => $events ] );
 		}
@@ -199,7 +218,7 @@ class Plugin {
 
             <!-- Form for Parameters -->
             <form class="sdokus-ajax-parameters">
-                <fieldset class="sdokus-ajax-parameters">
+                <fieldset>
                     <legend><?php esc_html_e( 'Event Parameters', 'sdokus-demo-ajax-inspector' ); ?></legend>
 
                     <div class="form-group">
@@ -214,8 +233,8 @@ class Plugin {
                 </fieldset>
             </form>
 
-            <!-- DropDown for method to use in AJAX call-->
-            <div>
+            <!-- DropDown for which method to use in AJAX call-->
+            <div class="sdokus-ajax-request-method">
                 <label for="sdokus-ajax-request-method"><?php esc_html_e( 'How Do You Want to Get Events?', 'sdokus-demo-ajax-inspector' ); ?></label>
                 <select name="sdokus-ajax-request-method" id="sdokus-ajax-request-method">
                     <option value="orm"><?php esc_html_e( 'ORM', 'sdokus-demo-ajax-inspector' ); ?></option>
