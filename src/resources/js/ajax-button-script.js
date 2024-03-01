@@ -5,27 +5,33 @@
  */
 
 jQuery( document ).ready( function ( $ ) {
-	// Container for displaying messages on the page
-	let messageContainer = $( '#sdokus-ajax-message-container' );
-
 	// Grab the internationalization object - there's an issue happening here where it is not properly finding this, so I temporarily removed it from renderEvents() below
 	const i18n = window.i18n;
 
+	// Container for displaying messages on the page
+	let messageContainer = $( '#sdokus-ajax-message-container' );
+
+	// Grab the dropdown menu option for which method to use to get events
 	let select = $('#sdokus-ajax-request-method');
-	let ormFields = $('#orm-fields');
-	let apiFields = $('#api-fields');
+
+	// Input for events per page
+	let perPage = $('#per-page');
+
+	// Input for starts after
+	let startsAfter = $('#starts-after');
 
 	// Function to toggle fields based on selected option
-	function toggleFields() {
-		ormFields.toggle(select.val() === 'orm');
-		apiFields.toggle(select.val() === 'api');
+	function toggleButtons() {
+		// Change the
+		$('#orm-button').toggle(select.val() === 'orm');
+		$('#api-button').toggle(select.val() === 'api');
 
 		// Clear the message container when fields are toggled
 		messageContainer.empty();
 	}
 
 	// Add event listener to update fields on select change
-	select.on('change', toggleFields);
+	select.on('change', toggleButtons);
 
 
 	/**
@@ -39,6 +45,8 @@ jQuery( document ).ready( function ( $ ) {
 			url: ajax_button_script_vars.ajaxurl,
 			data: {
 				action: 'sdokus_get_events_list',
+				per_page: perPage.val(),
+				starts_after: startsAfter.val(),
 			}
 		} )
 		.done( renderEvents );

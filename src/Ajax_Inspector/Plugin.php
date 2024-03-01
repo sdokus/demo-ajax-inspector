@@ -176,7 +176,11 @@ class Plugin {
 	 */
 	public function get_events_callback() {
 		if ( isset( $_GET['action'] ) ) {
-			$events = tribe_events()->per_page( 10 )->page( 1 )->all();
+			$per_page = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
+            $starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : "";
+
+			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after' , $starts_after )->all();
+
 			wp_send_json( [ 'events' => $events ] );
 		}
 		wp_die();
@@ -192,39 +196,51 @@ class Plugin {
 		?>
         <div class="sdokus-ajax-inspector">
             <h3><?php esc_html_e( 'AJAX Demo', 'sdokus-demo-ajax-inspector' ); ?></h3>
-            <div class="request">
-                <div>
-                    <label for="sdokus-ajax-request-method"><?php esc_html_e( 'How Do You Want to Get Events?', 'sdokus-demo-ajax-inspector' ); ?></label>
-                    <select name="sdokus-ajax-request-method" id="sdokus-ajax-request-method">
-                        <option value="orm"><?php esc_html_e( 'ORM', 'sdokus-demo-ajax-inspector' ); ?></option>
-                        <option value="api"><?php esc_html_e( 'API', 'sdokus-demo-ajax-inspector' ); ?></option>
-                    </select>
-                </div>
 
-                <!-- Form for ORM Calls -->
-                <div id="orm-fields" class="ajax-fields">
-                    <label for="orm-field1"><?php esc_html_e( 'ORM Field 1:', 'sdokus-demo-ajax-inspector' ); ?></label>
-                    <input type="text" name="orm-field1" id="orm-field1">
-                    <div class="sdokus-ajax-buttons">
-                        <button id="sdokus-ajax-orm-button"><?php esc_html_e( 'Get Events using TEC ORM', 'sdokus-demo-ajax-inspector' ); ?></button>
+            <!-- Form for Parameters -->
+            <form class="sdokus-ajax-parameters">
+                <fieldset class="sdokus-ajax-parameters">
+                    <legend><?php esc_html_e( 'Event Parameters', 'sdokus-demo-ajax-inspector' ); ?></legend>
+
+                    <div class="form-group">
+                        <label for="per-page"><?php esc_html_e( 'Per Page: ', 'sdokus-demo-ajax-inspector' ); ?></label>
+                        <input type="number" name="per-page" id="per-page" value="10">
                     </div>
-                </div>
 
-                <!-- Form for API Calls -->
-                <div id="api-fields" class="ajax-fields" style="display: none;">
-                    <label for="api-field1"><?php esc_html_e( 'API Field 1:', 'sdokus-demo-ajax-inspector' ); ?></label>
-                    <input type="text" name="api-field1" id="api-field1">
-                    <div class="sdokus-ajax-buttons">
-                        <button id="sdokus-ajax-api-button"><?php esc_html_e( 'Get Events using TEC API', 'sdokus-demo-ajax-inspector' ); ?></button>
+                    <div class="form-group">
+                        <label for="starts-after"><?php esc_html_e( 'Starts After: ', 'sdokus-demo-ajax-inspector' ); ?></label>
+                        <input type="date" name="starts-after" id="starts-after">
                     </div>
-                </div>
+                </fieldset>
+            </form>
 
-                <label for="sdokus-ajax-message-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
-                <div id="sdokus-ajax-message-container"></div>
+            <!-- DropDown for method to use in AJAX call-->
+            <div>
+                <label for="sdokus-ajax-request-method"><?php esc_html_e( 'How Do You Want to Get Events?', 'sdokus-demo-ajax-inspector' ); ?></label>
+                <select name="sdokus-ajax-request-method" id="sdokus-ajax-request-method">
+                    <option value="orm"><?php esc_html_e( 'ORM', 'sdokus-demo-ajax-inspector' ); ?></option>
+                    <option value="api"><?php esc_html_e( 'API', 'sdokus-demo-ajax-inspector' ); ?></option>
+                </select>
             </div>
+
+            <!-- Button for ORM Calls -->
+            <div id="orm-button" class="ajax-button">
+                <div class="sdokus-ajax-buttons">
+                    <button id="sdokus-ajax-orm-button"><?php esc_html_e( 'Get Events using TEC ORM', 'sdokus-demo-ajax-inspector' ); ?></button>
+                </div>
+            </div>
+
+            <!-- Button for API Calls -->
+            <div id="api-button" class="ajax-button" style="display: none;">
+                <div class="sdokus-ajax-buttons">
+                    <button id="sdokus-ajax-api-button"><?php esc_html_e( 'Get Events using TEC API', 'sdokus-demo-ajax-inspector' ); ?></button>
+                </div>
+            </div>
+
+            <label for="sdokus-ajax-message-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
+            <div id="sdokus-ajax-message-container"></div>
         </div>
 		<?php
 		return ob_get_clean();
 	}
-
 }
