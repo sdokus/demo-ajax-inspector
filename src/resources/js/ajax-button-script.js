@@ -11,6 +11,23 @@ jQuery( document ).ready( function ( $ ) {
 	// Grab the internationalization object - there's an issue happening here where it is not properly finding this, so I temporarily removed it from renderEvents() below
 	const i18n = window.i18n;
 
+	let select = $('#sdokus-ajax-request-method');
+	let ormFields = $('#orm-fields');
+	let apiFields = $('#api-fields');
+
+	// Function to toggle fields based on selected option
+	function toggleFields() {
+		ormFields.toggle(select.val() === 'orm');
+		apiFields.toggle(select.val() === 'api');
+	}
+
+	// Initial toggle
+	toggleFields();
+
+	// Add event listener to update fields on select change
+	select.on('change', toggleFields);
+
+
 	/**
 	 * Listens for click on test button to create AJAX call and grab events via ORM.
 	 *
