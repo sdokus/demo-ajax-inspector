@@ -58,9 +58,18 @@ jQuery( document ).ready( function ( $ ) {
 	 * @since 1.0.0
 	 */
 	$( '#sdokus-ajax-api-button' ).click( function () {
+		// Get the value from the per page input field
+		let perPageValue = perPage.val();
+		// Get the value from the starts after input field
+		let startsAfterValue = startsAfter.val();
+
+		// Construct the API URL dynamically
+		let apiUrl = ajax_button_script_vars.rest_endpoint.events + '?per_page=' + perPageValue + '&starts_after=' + startsAfterValue;
+
+
 		$.ajax( {
 				method: 'GET',
-				url: ajax_button_script_vars.rest_endpoint.events,
+				url: apiUrl,
 				beforeSend: function( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', ajax_button_script_vars.nonce );
 				},

@@ -146,7 +146,6 @@ class Plugin {
 		?>
         <div>
             <h1><?php esc_html_e( 'Create AJAX Calls to Grab Events!', 'sdokus-ajax-inspector' ); ?></h1>
-
 			<?php echo do_shortcode( '[ajax_button]' ); ?>
         </div>
 		<?php
@@ -175,7 +174,7 @@ class Plugin {
 			'ajaxurl'               => admin_url( 'admin-ajax.php' ),
 			'rest_endpoint'         => [
 				'base'   => get_rest_url(),
-				'events' => tribe_events_rest_url( '/events' ),
+				'events' => tribe_events_rest_url('/events'),
 				'tags'   => get_rest_url( null, '/wp/v2/tags' ),
 			],
 			'nonce'                 => wp_create_nonce( 'wp_rest' ),
