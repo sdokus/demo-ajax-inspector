@@ -61,7 +61,8 @@ jQuery( document ).ready( function ( $ ) {
 		// Get the value from the per page input field
 		let perPageValue = perPage.val();
 		// Get the value from the starts after input field
-		let startsAfterValue = startsAfter.val();
+		let startsAfterValue = startsAfter.val() ? startsAfter.val() : "";
+
 
 		// Construct the API URL dynamically
 		let apiUrl = ajax_button_script_vars.rest_endpoint.events + '?per_page=' + perPageValue + '&starts_after=' + startsAfterValue;
