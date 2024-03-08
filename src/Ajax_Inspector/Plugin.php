@@ -109,6 +109,7 @@ class Plugin {
 	 */
 	public function enable_hooks() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
+        add_action('admin_enqueue_scripts',[ $this, 'enqueue_ajax_button_script' ]  );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		add_action( 'admin_menu', [ $this, 'add_shortcode_menu_page' ] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
