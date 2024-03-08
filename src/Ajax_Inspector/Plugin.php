@@ -68,12 +68,10 @@ class Plugin {
 		return self::$instance;
 	}
 
-
 	/**
 	 * Initializes plugin variables and sets up WordPress hooks/actions.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	protected function __construct() {
 		// Intentionally empty.
@@ -109,28 +107,16 @@ class Plugin {
 	 */
 	public function enable_hooks() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
-        add_action('admin_enqueue_scripts',[ $this, 'enqueue_ajax_button_script' ]  );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		add_action( 'admin_menu', [ $this, 'add_shortcode_menu_page' ] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 	}
 
 	/**
-	 * Disables hooks for the plugin.
-	 *
-	 * @since 1.0.0
-	 */
-	public function disable_hooks() {
-		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
-		remove_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
-		remove_shortcode( 'ajax_button' );
-	}
-
-	/**
 	 * Adds a menu page to the WordPress dashboard.
 	 */
-	function add_shortcode_menu_page() {
-		// Use add_menu_page for a top-level menu page or add_submenu_page for a submenu page
+	public function add_shortcode_menu_page() {
 		add_menu_page(
 			'AJAX Demo',
 			'AJAX Demo',
@@ -138,16 +124,71 @@ class Plugin {
 			'ajax-demo',
 			[ $this, 'render' ],
 		);
+
+		add_submenu_page(
+			'ajax-demo',
+			'AJAX Logger',
+			'AJAX Logger',
+			'administrator',
+			'ajax-demo-2',
+			[ $this, 'ajax_logger' ],
+		);
 	}
 
 	/**
 	 * Callback function to render the shortcode content on a menu page.
 	 */
-	function render() {
+	public function render() {
 		?>
         <div>
             <h1><?php esc_html_e( 'Create AJAX Calls to Grab Events!', 'sdokus-ajax-inspector' ); ?></h1>
 			<?php echo do_shortcode( '[ajax_button]' ); ?>
+        </div>
+		<?php
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ajax_logger() {
+		$pp_time   = microtime( true );
+		$last_time = microtime( true );
+		$uuid      = uniqid();
+
+		add_action( 'all', function () use ( $pp_time, $uuid, $last_time ) {
+			$ct        = microtime( true );
+			$delta     = $ct - $last_time;
+			$last_time = microtime( true );
+
+			if ( is_admin() & $delta > 0.002) {
+				// Get the current filter
+				$current_filter = current_filter();
+
+				// Format the output with filter and time
+				$output = sprintf( '<strong>%s:</strong> %s seconds', $current_filter, number_format( $delta, 5 ) );
+
+				// Enqueue the script
+				wp_enqueue_script(
+                    'ajax-logger-script',
+                    $this->plugin_url . 'src/resources/js/ajax-log-script.js', [ 'jquery' ],
+                    '1.0',
+                    true
+                );
+
+				// Use JavaScript to append the content to the sdokus-ajax-log-container when the button is clicked
+				wp_add_inline_script( 'ajax-logger-script', "
+                jQuery(document).ready(function($) {
+                    $('#sdokus-ajax-log-container').append('$output<br>');
+                });
+            " );
+			}
+		} );
+		// Output HTML for your submenu along with the captured content and the button
+		?>
+        <div>
+            <h1><?php esc_html_e( 'Filter Log', 'sdokus-ajax-inspector' ); ?></h1>
+            <label for="sdokus-ajax-log-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
+            <div id="sdokus-ajax-log-container"></div>
         </div>
 		<?php
 	}
@@ -171,16 +212,20 @@ class Plugin {
 		);
 
 		// Localize script with nonce to MyAjax object
-		wp_localize_script( 'sdokus-ajax-inspector-buttons', 'ajax_button_script_vars', [
-			'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-			'rest_endpoint'         => [
-				'base'   => get_rest_url(),
-				'events' => tribe_events_rest_url('/events'),
-				'tags'   => get_rest_url( null, '/wp/v2/tags' ),
-			],
-			'nonce'                 => wp_create_nonce( 'wp_rest' ),
-			'event_happening_label' => esc_html__( '%1$s happening on %2$s', 'sdokus-ajax-inspector' ),
-		] );
+		wp_localize_script(
+			'sdokus-ajax-inspector-buttons',
+			'ajax_button_script_vars',
+			[
+				'ajaxurl'               => admin_url( 'admin-ajax.php' ),
+				'rest_endpoint'         => [
+					'base'   => get_rest_url(),
+					'events' => tribe_events_rest_url( '/events' ),
+					'tags'   => get_rest_url( null, '/wp/v2/tags' ),
+				],
+				'nonce'                 => wp_create_nonce( 'wp_rest' ),
+				'event_happening_label' => esc_html__( '%1$s happening on %2$s', 'sdokus-ajax-inspector' ),
+			]
+		);
 
 		// Set up translations for the script
 		wp_set_script_translations( 'sdokus-ajax-inspector-buttons', 'sdokus-ajax-inspector' );
@@ -196,7 +241,7 @@ class Plugin {
 	public function get_events_callback() {
 		if ( isset( $_GET['action'] ) ) {
 			$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
-			$starts_after = $_GET['starts_after'] ?? "01 January 1970";
+			$starts_after = $_GET['starts_after'] ?? '01 January 1970';
 
 			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
 
