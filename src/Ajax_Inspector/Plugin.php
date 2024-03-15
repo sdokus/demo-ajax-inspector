@@ -110,6 +110,7 @@ class Plugin {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		add_action( 'admin_menu', [ $this, 'add_shortcode_menu_page' ] );
+		add_action( 'admin_notices', [$this, 'ajax_demo_notice'] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 	}
 
@@ -185,7 +186,7 @@ class Plugin {
 	}
 
 	/**
-	 * Callback function to render the shortcode content on an admin menu page.
+	 * Callback function to render the shortcode demo content on an admin menu page.
 	 *
 	 * @since 1.0.0
 	 */
@@ -205,6 +206,14 @@ class Plugin {
         </div>
 		<?php
 	}
+
+    public function ajax_demo_notice () {
+	    ?>
+        <div class="notice notice-success is-dismissible" id="custom-admin-notice">
+            <div id="sdokus-ajax-message-container"></div>
+        </div>
+	    <?php
+    }
 
 	/**
 	 * @return void
@@ -322,8 +331,6 @@ class Plugin {
                 </div>
             </div>
 
-            <label for="sdokus-ajax-message-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
-            <div id="sdokus-ajax-message-container"></div>
         </div>
 		<?php
 		return ob_get_clean();

@@ -27,7 +27,7 @@ jQuery( document ).ready( function ( $ ) {
 		$('#api-button').toggle(select.val() === 'api');
 
 		// Clear the message container when fields are toggled
-		messageContainer.empty();
+		$('#custom-admin-notice').css('display', 'none');
 	}
 
 	// Add event listener to update fields on select change
@@ -61,7 +61,7 @@ jQuery( document ).ready( function ( $ ) {
 		// Get the value from the per page input field
 		let perPageValue = perPage.val();
 		// Get the value from the starts after input field
-		let startsAfterValue = startsAfter.val() ? startsAfter.val() : "";
+		let startsAfterValue = startsAfter.val() ? startsAfter.val() : '01 January 1970';
 
 
 		// Construct the API URL dynamically
@@ -89,10 +89,16 @@ jQuery( document ).ready( function ( $ ) {
 	 * @param response
 	 */
 	let renderEvents = function ( response ) {
+		// Clear out the container in case it already has a response in it
+		messageContainer.empty();
+
 		for (let event of response.events) {
 			let listItem = $('<li></li>');
 			listItem.html( sprintf( ajax_button_script_vars.event_happening_label, event.title, event.start_date ) );
 			messageContainer.append(listItem);
 		}
+
+		// Show the notice by modifying its CSS
+		$('#custom-admin-notice').css('display', 'block');
 	}
 } );
