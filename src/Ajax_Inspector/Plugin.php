@@ -224,11 +224,15 @@ class Plugin {
 		$uuid      = uniqid();
 
 		add_action( 'all', function () use ( $pp_time, $uuid, $last_time ) {
+			if ( ! is_admin() ) {
+				return;
+			}
+
 			$ct        = microtime( true );
 			$delta     = $ct - $last_time;
 			$last_time = microtime( true );
 
-			if ( is_admin() & $delta > 0.002 ) {
+			if ( $delta > 0.002 ) {
 				// Get the current filter
 				$current_filter = current_filter();
 
@@ -269,14 +273,17 @@ class Plugin {
 	 * @return void
 	 */
 	public function get_events_callback() {
-		if ( isset( $_GET['action'] ) ) {
-			$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
-			$starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : date( 'Y-m-d' );
-
-			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
-
-			wp_send_json( [ 'events' => $events ] );
+		if ( !isset( $_GET['action'] ) ) {
+			wp_send_json_error( 'Something went wrong' );
 		}
+
+		$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
+		$starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : date( 'Y-m-d' );
+
+		$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
+
+		wp_send_json( [ 'events' => $events ] );
+
 		wp_die();
 	}
 

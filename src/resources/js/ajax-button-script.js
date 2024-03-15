@@ -12,27 +12,26 @@ jQuery( document ).ready( function ( $ ) {
 	let messageContainer = $( '#sdokus-ajax-message-container' );
 
 	// Grab the dropdown menu option for which method to use to get events
-	let select = $('#sdokus-ajax-request-method');
+	let select = $( '#sdokus-ajax-request-method' );
 
 	// Input for events per page
-	let perPage = $('#per-page');
+	let perPage = $( '#per-page' );
 
 	// Input for starts after
-	let startsAfter = $('#starts-after');
+	let startsAfter = $( '#starts-after' );
 
 	// Function to toggle fields based on selected option
 	function toggleButtons() {
 		// Change the
-		$('#orm-button').toggle(select.val() === 'orm');
-		$('#api-button').toggle(select.val() === 'api');
+		$( '#orm-button' ).toggle( select.val() === 'orm' );
+		$( '#api-button' ).toggle( select.val() === 'api' );
 
 		// Clear the notice when fields are toggled
-		$('#sdokus-ajax-notice').css('display', 'none');
+		$( '#sdokus-ajax-notice' ).css( 'display', 'none' );
 	}
 
 	// Add event listener to update fields on select change
-	select.on('change', toggleButtons);
-
+	select.on( 'change', toggleButtons );
 
 	/**
 	 * Listens for click on test button to create AJAX call and grab events via ORM.
@@ -41,15 +40,19 @@ jQuery( document ).ready( function ( $ ) {
 	 */
 	$( '#sdokus-ajax-orm-button' ).click( function () {
 		$.ajax( {
-			method: 'GET',
-			url: ajax_button_script_vars.ajaxurl,
-			data: {
-				action: 'sdokus_get_events_list',
-				per_page: perPage.val(),
-				starts_after: startsAfter.val(),
-			}
-		} )
-		.done( renderEvents );
+				method: 'GET',
+				url: ajax_button_script_vars.ajaxurl,
+				data: {
+					action: 'sdokus_get_events_list',
+					per_page: perPage.val(),
+					starts_after: startsAfter.val(),
+				}
+			} )
+			.done( renderEvents )
+			.fail( function ( xhr, textStatus, errorThrown ) {
+				messageContainer.append( '<p> An error occurred while fetching events. </p>' )
+				$( '#sdokus-ajax-notice' ).css( 'display', 'block' ).removeClass('notice-success').addClass('notice-error');;
+			} );
 	} );
 
 	/**
@@ -61,25 +64,27 @@ jQuery( document ).ready( function ( $ ) {
 		// Get the value from the per page input field
 		let perPageValue = perPage.val();
 		// Get the value from the starts after input field
-		let currentDate = new Date().toISOString().split('T')[0];
+		let currentDate = new Date().toISOString().split( 'T' )[ 0 ];
 		let startsAfterValue = startsAfter.val() ? startsAfter.val() : currentDate;
-
 
 		// Construct the API URL dynamically
 		let apiUrl = ajax_button_script_vars.rest_endpoint.events + '?per_page=' + perPageValue + '&starts_after=' + startsAfterValue;
 
-
 		$.ajax( {
 				method: 'GET',
 				url: apiUrl,
-				beforeSend: function( xhr ) {
+				beforeSend: function ( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', ajax_button_script_vars.nonce );
 				},
 				data: {
 					action: 'sdokus_api_get_events_list',
 				}
 			} )
-			.done( renderEvents );
+			.done( renderEvents )
+			.fail( function ( xhr, textStatus, errorThrown ) {
+				messageContainer.append( '<p> An error occurred while fetching events. </p>' )
+				$( '#sdokus-ajax-notice' ).css( 'display', 'block' ).removeClass('notice-success').addClass('notice-error');;
+			} );
 	} );
 
 	/**
@@ -92,14 +97,16 @@ jQuery( document ).ready( function ( $ ) {
 	let renderEvents = function ( response ) {
 		// Clear out the container in case it already has a response in it
 		messageContainer.empty();
-		messageContainer.append("<strong>Events:</strong> <br>");
-		for (let event of response.events) {
-			let listItem = $('<li></li>');
+		messageContainer.append( "<strong>Events:</strong> <br>" );
+
+		// From the response, add all the events (title and start date) to the container
+		for ( let event of response.events ) {
+			let listItem = $( '<li></li>' );
 			listItem.html( sprintf( ajax_button_script_vars.event_happening_label, event.title, event.start_date ) );
-			messageContainer.append(listItem);
+			messageContainer.append( listItem );
 		}
 
 		// Show the notice by modifying its CSS
-		$('#sdokus-ajax-notice').css('display', 'block');
+		$( '#sdokus-ajax-notice' ).css( 'display', 'block' ).removeClass('notice-error').addClass('notice-success');
 	}
 } );
