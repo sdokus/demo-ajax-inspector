@@ -113,94 +113,23 @@ class Plugin {
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 	}
 
-	/**
-	 * Adds a menu page to the WordPress dashboard.
-	 */
-	public function add_shortcode_menu_page() {
-		add_menu_page(
-			'AJAX Demo',
-			'AJAX Demo',
-			'administrator',
-			'ajax-demo',
-			[ $this, 'render' ],
-		);
-
-		add_submenu_page(
-			'ajax-demo',
-			'AJAX Logger',
-			'AJAX Logger',
-			'administrator',
-			'ajax-demo-2',
-			[ $this, 'ajax_logger' ],
-		);
-	}
-
-	/**
-	 * Callback function to render the shortcode content on a menu page.
-	 */
-	public function render() {
-		?>
-        <div>
-            <h1><?php esc_html_e( 'Create AJAX Calls to Grab Events!', 'sdokus-ajax-inspector' ); ?></h1>
-			<?php echo do_shortcode( '[ajax_button]' ); ?>
-        </div>
-		<?php
-	}
-
-	/**
-	 * @return void
-	 */
-	public function ajax_logger() {
-		$pp_time   = microtime( true );
-		$last_time = microtime( true );
-		$uuid      = uniqid();
-
-		add_action( 'all', function () use ( $pp_time, $uuid, $last_time ) {
-			$ct        = microtime( true );
-			$delta     = $ct - $last_time;
-			$last_time = microtime( true );
-
-			if ( is_admin() & $delta > 0.002) {
-				// Get the current filter
-				$current_filter = current_filter();
-
-				// Format the output with filter and time
-				$output = sprintf( '<strong>%s:</strong> %s seconds', $current_filter, number_format( $delta, 5 ) );
-
-				// Enqueue the script
-				wp_enqueue_script(
-                    'ajax-logger-script',
-                    $this->plugin_url . 'src/resources/js/ajax-log-script.js', [ 'jquery' ],
-                    '1.0',
-                    true
-                );
-
-				// Use JavaScript to append the content to the sdokus-ajax-log-container when the button is clicked
-				wp_add_inline_script( 'ajax-logger-script', "
-                jQuery(document).ready(function($) {
-                    $('#sdokus-ajax-log-container').append('$output<br>');
-                });
-            " );
-			}
-		} );
-		// Output HTML for your submenu along with the captured content and the button
-		?>
-        <div>
-            <h1><?php esc_html_e( 'Filter Log', 'sdokus-ajax-inspector' ); ?></h1>
-            <label for="sdokus-ajax-log-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
-            <div id="sdokus-ajax-log-container"></div>
-        </div>
-		<?php
-	}
-
 	public function enqueue_ajax_button_script(): void {
-		// Enqueue the CSS file.
-		wp_enqueue_style(
-			'sdokus-ajax-inspector-style',
-			$this->plugin_url . 'src/resources/css/style.css',
-			[],
-			'1.0'
-		);
+		// Enqueue the appropriate CSS file depending if on the frontend or backend
+		if ( ! is_admin() ) {
+			wp_enqueue_style(
+				'sdokus-ajax-inspector-style',
+				$this->plugin_url . 'src/resources/css/style.css',
+				[],
+				'1.0'
+			);
+		} else {
+			wp_enqueue_style(
+				'sdokus-ajax-inspector-admin-style',
+				$this->plugin_url . 'src/resources/css/ajax-admin.css',
+				[],
+				'1.0'
+			);
+        }
 
 		// Enqueue the JS script.
 		wp_enqueue_script(
@@ -229,6 +158,98 @@ class Plugin {
 
 		// Set up translations for the script
 		wp_set_script_translations( 'sdokus-ajax-inspector-buttons', 'sdokus-ajax-inspector' );
+	}
+
+	/**
+	 * Adds a menu page to the WordPress dashboard.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_shortcode_menu_page() {
+		add_menu_page(
+			'AJAX Demo',
+			'AJAX Demo',
+			'administrator',
+			'ajax-demo',
+			[ $this, 'render' ],
+		);
+
+		add_submenu_page(
+			'ajax-demo',
+			'AJAX Logger',
+			'AJAX Logger',
+			'administrator',
+			'ajax-demo-2',
+			[ $this, 'ajax_logger' ],
+		);
+	}
+
+	/**
+	 * Callback function to render the shortcode content on an admin menu page.
+	 *
+	 * @since 1.0.0
+	 */
+	public function render() {
+		?>
+        <div class="sdokus-ajax-demo-settings">
+            <h1><?php esc_html_e( 'AJAX Demo', 'sdokus-ajax-inspector' ); ?></h1>
+            <div class="sdokus-ajax-demo-settings-header">
+                <h2><?php esc_html_e( 'Grab Events Using AJAX!', 'sdokus-ajax-inspector' ); ?></h2>
+                <p><?php
+					esc_html_e( 'Use the form below to create an AJAX call to return events using either the TEC ORM or TEC REST API', 'sdokus-ajax-inspector' )
+					?>
+                </p>
+            </div>
+
+			<?php echo do_shortcode( '[ajax_button]' ); ?>
+        </div>
+		<?php
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ajax_logger() {
+		$pp_time   = microtime( true );
+		$last_time = microtime( true );
+		$uuid      = uniqid();
+
+		add_action( 'all', function () use ( $pp_time, $uuid, $last_time ) {
+			$ct        = microtime( true );
+			$delta     = $ct - $last_time;
+			$last_time = microtime( true );
+
+			if ( is_admin() & $delta > 0.002 ) {
+				// Get the current filter
+				$current_filter = current_filter();
+
+				// Format the output with filter and time
+				$output = sprintf( '<strong>%s:</strong> %s seconds', $current_filter, number_format( $delta, 5 ) );
+
+				// Enqueue the script
+				wp_enqueue_script(
+					'ajax-logger-script',
+					$this->plugin_url . 'src/resources/js/ajax-log-script.js', [ 'jquery' ],
+					'1.0',
+					true
+				);
+
+				// Use JavaScript to append the content to the sdokus-ajax-log-container when the button is clicked
+				wp_add_inline_script( 'ajax-logger-script', "
+                jQuery(document).ready(function($) {
+                    $('#sdokus-ajax-log-container').append('$output<br>');
+                });
+            " );
+			}
+		} );
+		// Output HTML for your submenu along with the captured content and the button
+		?>
+        <div>
+            <h1><?php esc_html_e( 'Filter Log', 'sdokus-ajax-inspector' ); ?></h1>
+            <label for="sdokus-ajax-log-container"><?php esc_html_e( 'Output:', 'sdokus-demo-ajax-inspector' ); ?></label>
+            <div id="sdokus-ajax-log-container"></div>
+        </div>
+		<?php
 	}
 
 	/**
@@ -290,14 +311,14 @@ class Plugin {
             <!-- Button for ORM Calls -->
             <div id="orm-button" class="ajax-button">
                 <div class="sdokus-ajax-buttons">
-                    <button id="sdokus-ajax-orm-button"><?php esc_html_e( 'Get Events using TEC ORM', 'sdokus-demo-ajax-inspector' ); ?></button>
+                    <?php submit_button('Get Events Using TEC ORM', 'primary', 'sdokus-ajax-orm-button');?>
                 </div>
             </div>
 
             <!-- Button for API Calls -->
             <div id="api-button" class="ajax-button" style="display: none;">
                 <div class="sdokus-ajax-buttons">
-                    <button id="sdokus-ajax-api-button"><?php esc_html_e( 'Get Events using TEC API', 'sdokus-demo-ajax-inspector' ); ?></button>
+	                <?php submit_button('Get Events Using TEC REST API', 'primary', 'sdokus-ajax-api-button');?>
                 </div>
             </div>
 
