@@ -1,0 +1,19 @@
+{
+    "name": "sdokus/demo-ajax-inspector",
+    "description": "A Demo WordPress plugin by Sami Dokus",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0",
+    "autoload": {
+        "psr-4": {
+            "Sdokus\\Ajax_Inspector\\": "src/Ajax_Inspector"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {},
+    "config": {
+        "preferred-install": "dist",
+        "platform": {
+            "php": "7.4"
+        }
+    }
+}
