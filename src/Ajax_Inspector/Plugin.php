@@ -110,7 +110,7 @@ class Plugin {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_ajax_button_script' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
 		add_action( 'admin_menu', [ $this, 'add_shortcode_menu_page' ] );
-		add_action( 'admin_notices', [$this, 'ajax_demo_notice'] );
+		add_action( 'admin_notices', [ $this, 'ajax_demo_notice' ] );
 		add_shortcode( 'ajax_button', [ $this, 'ajax_button_shortcode' ] );
 	}
 
@@ -130,7 +130,7 @@ class Plugin {
 				[],
 				'1.0'
 			);
-        }
+		}
 
 		// Enqueue the JS script.
 		wp_enqueue_script(
@@ -207,13 +207,13 @@ class Plugin {
 		<?php
 	}
 
-    public function ajax_demo_notice () {
-	    ?>
-        <div class="notice notice-success is-dismissible" id="custom-admin-notice">
+	public function ajax_demo_notice() {
+		?>
+        <div class="notice notice-success is-dismissible" id="sdokus-ajax-notice">
             <div id="sdokus-ajax-message-container"></div>
         </div>
-	    <?php
-    }
+		<?php
+	}
 
 	/**
 	 * @return void
@@ -271,7 +271,7 @@ class Plugin {
 	public function get_events_callback() {
 		if ( isset( $_GET['action'] ) ) {
 			$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
-			$starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : date('Y-m-d');
+			$starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : date( 'Y-m-d' );
 
 			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
 
@@ -320,17 +320,23 @@ class Plugin {
             <!-- Button for ORM Calls -->
             <div id="orm-button" class="ajax-button">
                 <div class="sdokus-ajax-buttons">
-                    <?php submit_button('Get Events Using TEC ORM', 'primary', 'sdokus-ajax-orm-button');?>
+					<?php submit_button( 'Get Events Using TEC ORM', 'primary', 'sdokus-ajax-orm-button' ); ?>
                 </div>
             </div>
 
             <!-- Button for API Calls -->
             <div id="api-button" class="ajax-button" style="display: none;">
                 <div class="sdokus-ajax-buttons">
-	                <?php submit_button('Get Events Using TEC REST API', 'primary', 'sdokus-ajax-api-button');?>
+					<?php submit_button( 'Get Events Using TEC REST API', 'primary', 'sdokus-ajax-api-button' ); ?>
                 </div>
             </div>
 
+            <!-- If the shortcode is on the frontend, we need the output to be directly on the page instead of a WP notice -->
+			<?php
+			if ( ! is_admin() ) {
+				echo '<div id="sdokus-ajax-notice"><div id="sdokus-ajax-message-container"></div></div>';
+			}
+			?>
 
         </div>
 		<?php

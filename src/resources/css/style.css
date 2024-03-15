@@ -10,7 +10,7 @@
 }
 
 .sdokus-ajax-request-method {
-	padding:20px;
+	padding: 20px;
 }
 
 .sdokus-ajax-buttons {
@@ -43,4 +43,8 @@
 	border: 1px solid #ccc;
 	background-color: floralwhite;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#sdokus-ajax-notice {
+	display: none;
 }

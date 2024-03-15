@@ -27,7 +27,7 @@ jQuery( document ).ready( function ( $ ) {
 		$('#api-button').toggle(select.val() === 'api');
 
 		// Clear the notice when fields are toggled
-		$('#custom-admin-notice').css('display', 'none');
+		$('#sdokus-ajax-notice').css('display', 'none');
 	}
 
 	// Add event listener to update fields on select change
@@ -100,6 +100,6 @@ jQuery( document ).ready( function ( $ ) {
 		}
 
 		// Show the notice by modifying its CSS
-		$('#custom-admin-notice').css('display', 'block');
+		$('#sdokus-ajax-notice').css('display', 'block');
 	}
 } );
