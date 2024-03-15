@@ -26,7 +26,7 @@ jQuery( document ).ready( function ( $ ) {
 		$('#orm-button').toggle(select.val() === 'orm');
 		$('#api-button').toggle(select.val() === 'api');
 
-		// Clear the message container when fields are toggled
+		// Clear the notice when fields are toggled
 		$('#custom-admin-notice').css('display', 'none');
 	}
 
@@ -61,7 +61,8 @@ jQuery( document ).ready( function ( $ ) {
 		// Get the value from the per page input field
 		let perPageValue = perPage.val();
 		// Get the value from the starts after input field
-		let startsAfterValue = startsAfter.val() ? startsAfter.val() : '01 January 1970';
+		let currentDate = new Date().toISOString().split('T')[0];
+		let startsAfterValue = startsAfter.val() ? startsAfter.val() : currentDate;
 
 
 		// Construct the API URL dynamically
@@ -91,7 +92,7 @@ jQuery( document ).ready( function ( $ ) {
 	let renderEvents = function ( response ) {
 		// Clear out the container in case it already has a response in it
 		messageContainer.empty();
-
+		messageContainer.append("<strong>Events:</strong> <br>");
 		for (let event of response.events) {
 			let listItem = $('<li></li>');
 			listItem.html( sprintf( ajax_button_script_vars.event_happening_label, event.title, event.start_date ) );

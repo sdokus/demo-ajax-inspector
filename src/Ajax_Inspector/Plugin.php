@@ -271,7 +271,7 @@ class Plugin {
 	public function get_events_callback() {
 		if ( isset( $_GET['action'] ) ) {
 			$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
-			$starts_after = $_GET['starts_after'] ?? '01 January 1970';
+			$starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : date('Y-m-d');
 
 			$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
 
@@ -330,6 +330,7 @@ class Plugin {
 	                <?php submit_button('Get Events Using TEC REST API', 'primary', 'sdokus-ajax-api-button');?>
                 </div>
             </div>
+
 
         </div>
 		<?php
