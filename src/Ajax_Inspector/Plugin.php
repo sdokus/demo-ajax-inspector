@@ -17,11 +17,11 @@ namespace Sdokus\Ajax_Inspector;
 class Plugin {
 
 	/**
-     * The current version of the plugin.
-     *
+	 * The current version of the plugin.
+	 *
 	 * @since 1.0.0
 	 */
-    public const VERSION = '1.0.0';
+	public const VERSION = '1.0.0';
 	/**
 	 * @since 1.0.0
 	 *
@@ -64,9 +64,9 @@ class Plugin {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return static
+	 * @return self
 	 */
-	public static function get_instance() {
+	public static function get_instance(): self {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -80,7 +80,7 @@ class Plugin {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-        // Intentionally left empty.
+		// Intentionally left empty.
 	}
 
 	/**
@@ -110,48 +110,41 @@ class Plugin {
 	 * Enables hooks for the plugin.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @return void
 	 */
-	public function enable_hooks() {
-		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events_callback' ] );
+	public function enable_hooks(): void {
+
 		add_action( 'admin_notices', [ $this, 'ajax_demo_notice' ] );
-
-
-        add_action('sdokus_ajax_plugin_loaded', [$this , 'load'], 15);
-	}
-
-    public function load():void{
-        Admin\Inspector_Page::get_instance();
-        Admin\Logger_Page::get_instance();
-        Shortcode\Ajax_Button::get_instance();
-    }
-
-	public function ajax_demo_notice() {
-		?>
-        <div class="notice notice-success is-dismissible" id="sdokus-ajax-notice">
-            <div id="sdokus-ajax-message-container"></div>
-        </div>
-		<?php
+		add_action( 'sdokus_ajax_plugin_loaded', [ $this, 'load' ], 15 );
 	}
 
 	/**
-	 * Uses the TEC ORM to retrieve events and send back as JSON response.
+	 * Loads the other classes for the plugin.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
-	public function get_events_callback() {
-		if ( !isset( $_GET['action'] ) ) {
-			wp_send_json_error( 'Something went wrong' );
-		}
+	public function load(): void {
+		Admin\Inspector_Page::get_instance();
+		Admin\Logger_Page::get_instance();
+		Shortcode\Ajax_Button::get_instance();
+        Ajax\Ajax_Callback::get_instance();
+	}
 
-		$per_page     = isset( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : 10;
-		$starts_after = isset( $_GET['starts_after'] ) ? $_GET['starts_after'] : date( 'Y-m-d' );
-
-		$events = tribe_events()->per_page( $per_page )->page( 1 )->where( 'starts_after', $starts_after )->all();
-
-		wp_send_json( [ 'events' => $events ] );
-
-		wp_die();
+	/**
+	 * Creates the notice for the AJAX output.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function ajax_demo_notice(): void {
+		?>
+        <div class="notice notice-success is-dismissible" id="sdokus-ajax-notice">
+            <div id="sdokus-ajax-message-container"></div>
+        </div>
+		<?php
 	}
 }

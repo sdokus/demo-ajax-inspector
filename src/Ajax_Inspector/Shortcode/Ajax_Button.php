@@ -21,7 +21,14 @@ class Ajax_Button extends Singleton_Abstract {
 		add_action( 'init', [ $this, 'register_assets' ] );
 	}
 
-	public function register_assets(): void {
+	/**
+     * Registers the assets for the Ajax Demo functionality.
+     *
+     * @since 1.0.0
+     *
+	 * @return void
+	 */
+    public function register_assets(): void {
 		wp_register_style(
 			'sdokus-ajax-inspector-style',
 			Plugin::get_instance()->plugin_url . 'src/resources/css/style.css',
@@ -44,6 +51,10 @@ class Ajax_Button extends Singleton_Abstract {
 		);
 	}
 
+	/**
+     * Enqueues the assets for the Ajax Demo functionality.
+	 * @return void
+	 */
 	protected function enqueue_assets(): void {
         wp_enqueue_script( 'sdokus-ajax-inspector-buttons' );
         if (is_admin()){
@@ -72,7 +83,14 @@ class Ajax_Button extends Singleton_Abstract {
 		wp_set_script_translations( 'sdokus-ajax-inspector-buttons', 'sdokus-ajax-inspector' );
 	}
 
-	public function get_output(): string {
+	/**
+     * Returns the HTML for the AJAX Demo
+     *
+     * @since 1.0.0
+     *
+	 * @return string
+	 */
+    public function get_output(): string {
         $this->enqueue_assets();
 		ob_start();
 		?>

@@ -77,7 +77,14 @@ class Logger_Page extends Singleton_Abstract {
 		return $this->registered_hook;
 	}
 
-	public function render():void {
+	/**
+     * Returns the output for the AJAX Logger functionality.
+     *
+     * @since 1.0.0
+     *
+	 * @return void
+	 */
+    public function render():void {
 		$pp_time   = microtime( true );
 		$last_time = microtime( true );
 		$uuid      = uniqid();

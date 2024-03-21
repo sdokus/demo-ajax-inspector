@@ -36,23 +36,44 @@ class Inspector_Page extends Singleton_Abstract {
 		add_action( 'admin_menu', [ $this, 'add_to_wordpress' ] );
 	}
 
-	public function add_to_wordpress() {
+	/**
+     * Adds the menu page for the AJAX Inspector Page
+     *
+     * @since 1.0.0
+     *
+	 * @return void
+	 */
+    public function add_to_wordpress(): void {
 		$this->registered_hook = add_menu_page(
 			__( 'AJAX Inspector', 'ajax-inspector' ),
 			__( 'AJAX Inspector', 'ajax-inspector' ),
 			static::CAPABILITY,
 			$this->get_menu_slug(),
 			[ $this, 'render' ],
-			'dashions-admin-tools',
+			'',
 			99
 		);
 	}
 
+	/**
+     * Slug for the menu.
+     *
+     * @since 1.0.0
+     *
+	 * @return string
+	 */
     public function get_menu_slug(): string {
         return 'ajax-inspector';
     }
 
-	public function render(): void {
+	/**
+	 * Output for the AJAX Inspector Admin Page.
+	 *
+     * @since 1.0.0
+     *
+	 * @return void
+	 */
+    public function render(): void {
 		?>
         <div class="sdokus-ajax-demo-settings">
             <h1><?php esc_html_e( 'AJAX Demo', 'sdokus-ajax-inspector' ); ?></h1>
