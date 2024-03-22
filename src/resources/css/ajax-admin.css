@@ -1,3 +1,8 @@
+.sdokus-ajax-demo-settings{
+	max-width: 1000px;
+	margin: 10px 20px 10px 2px;
+}
+
 .sdokus-ajax-demo-settings-header {
 	background-color: #f9f9f9;
 	border: 1px solid #ccc;
@@ -12,8 +17,10 @@ h3 {
 	justify-content: space-between;
 	margin-bottom: 10px;
 	padding: 6px 12px;
+
 }
 
 #sdokus-ajax-notice {
 	display: none;
 }
+

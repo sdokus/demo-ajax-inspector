@@ -5,6 +5,5 @@
  */
 
 jQuery(document).ready(function ($) {
-		// Append the content to the sdokus-ajax-log-container when the page loads
-		$('#sdokus-ajax-log-container').append('$output<br>');
+		// intentionally left blank for now
 });
