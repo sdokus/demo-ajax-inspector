@@ -114,8 +114,7 @@ class Plugin {
 	 * @return void
 	 */
 	public function enable_hooks(): void {
-
-		add_action( 'admin_notices', [ $this, 'ajax_demo_notice' ] );
+		add_action( 'admin_notices', [ $this, 'ajax_inspector_notice' ] );
 		add_action( 'sdokus_ajax_plugin_loaded', [ $this, 'load' ], 15 );
 	}
 
@@ -140,11 +139,13 @@ class Plugin {
 	 *
 	 * @return void
 	 */
-	public function ajax_demo_notice(): void {
-		?>
-        <div class="notice notice-success is-dismissible" id="sdokus-ajax-notice">
-            <div id="sdokus-ajax-message-container"></div>
-        </div>
-		<?php
+	public function ajax_inspector_notice(): void {
+		if (isset($_GET['page']) && $_GET['page'] === 'ajax-inspector') {
+			?>
+            <div class="notice notice-success is-dismissible" id="sdokus-ajax-notice">
+                <div id="sdokus-ajax-message-container"></div>
+            </div>
+			<?php
+	}
 	}
 }

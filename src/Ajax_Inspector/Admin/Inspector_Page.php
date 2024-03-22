@@ -75,9 +75,9 @@ class Inspector_Page extends Singleton_Abstract {
 	 */
     public function render(): void {
 		?>
-        <div class="sdokus-ajax-demo-settings">
-            <h1><?php esc_html_e( 'AJAX Demo', 'sdokus-ajax-inspector' ); ?></h1>
-            <div class="sdokus-ajax-demo-settings-header">
+        <div class="sdokus-ajax-settings">
+            <h1><?php esc_html_e( 'AJAX Inspector', 'sdokus-ajax-inspector' ); ?></h1>
+            <div class="sdokus-ajax-settings-header">
                 <h2><?php esc_html_e( 'Grab Events Using AJAX!', 'sdokus-ajax-inspector' ); ?></h2>
                 <p><?php
 					esc_html_e( 'Use the form below to create an AJAX call to return events using either the TEC ORM or TEC REST API', 'sdokus-ajax-inspector' )

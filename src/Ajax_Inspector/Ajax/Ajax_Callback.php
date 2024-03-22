@@ -16,11 +16,7 @@ class Ajax_Callback extends Singleton_Abstract {
 	 * @inheritDoc
 	 */
 	protected function register(): void {
-		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_per_page_param' ] );
-		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_starts_after_param' ] );
-		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'get_events' ] );
 		add_action( 'wp_ajax_sdokus_get_events_list', [ $this, 'send_events' ] );
-
 	}
 
 	// @todo - Method to create nonce

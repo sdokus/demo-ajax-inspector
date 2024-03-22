@@ -1,14 +1,18 @@
-.sdokus-ajax-demo-settings{
+.sdokus-ajax-settings {
 	max-width: 1000px;
 	margin: 10px 20px 10px 2px;
 }
 
-.sdokus-ajax-demo-settings-header {
+.sdokus-ajax-settings-header {
 	background-color: #f9f9f9;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	margin: 20px 0;
 	padding: 8px 20px 12px;
+}
+
+.form-group {
+	padding: 10px 0 10px 10px;
 }
 
 h3 {

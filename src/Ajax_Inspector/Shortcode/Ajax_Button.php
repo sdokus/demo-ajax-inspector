@@ -22,7 +22,7 @@ class Ajax_Button extends Singleton_Abstract {
 	}
 
 	/**
-     * Registers the assets for the Ajax Demo functionality.
+     * Registers the assets for the Ajax inspector functionality.
      *
      * @since 1.0.0
      *
@@ -52,7 +52,10 @@ class Ajax_Button extends Singleton_Abstract {
 	}
 
 	/**
-     * Enqueues the assets for the Ajax Demo functionality.
+     * Enqueues the assets for the Ajax inspector functionality.
+     *
+     * @since 1.0.0
+     *
 	 * @return void
 	 */
 	protected function enqueue_assets(): void {
@@ -84,7 +87,7 @@ class Ajax_Button extends Singleton_Abstract {
 	}
 
 	/**
-     * Returns the HTML for the AJAX Demo
+     * Returns the HTML for the AJAX inspector
      *
      * @since 1.0.0
      *
@@ -95,20 +98,20 @@ class Ajax_Button extends Singleton_Abstract {
 		ob_start();
 		?>
         <div class="sdokus-ajax-inspector">
-            <h3><?php esc_html_e( 'AJAX Demo', 'sdokus-demo-ajax-inspector' ); ?></h3>
+            <h3><?php esc_html_e( 'AJAX Inspector', 'sdokus-ajax-inspector' ); ?></h3>
 
             <!-- Form for Parameters -->
             <form class="sdokus-ajax-parameters">
                 <fieldset>
-                    <legend><?php esc_html_e( 'Event Parameters', 'sdokus-demo-ajax-inspector' ); ?></legend>
+                    <legend><?php esc_html_e( 'Event Parameters', 'sdokus-ajax-inspector' ); ?></legend>
 
                     <div class="form-group">
-                        <label for="per-page"><?php esc_html_e( 'Per Page: ', 'sdokus-demo-ajax-inspector' ); ?></label>
+                        <label for="per-page"><?php esc_html_e( 'Per Page: ', 'sdokus-ajax-inspector' ); ?></label>
                         <input type="number" name="per-page" id="per-page" value="10">
                     </div>
 
                     <div class="form-group">
-                        <label for="starts-after"><?php esc_html_e( 'Starts After: ', 'sdokus-demo-ajax-inspector' ); ?></label>
+                        <label for="starts-after"><?php esc_html_e( 'Starts After: ', 'sdokus-ajax-inspector' ); ?></label>
                         <input type="date" name="starts-after" id="starts-after">
                     </div>
                 </fieldset>
@@ -116,10 +119,10 @@ class Ajax_Button extends Singleton_Abstract {
 
             <!-- DropDown for which method to use in AJAX call-->
             <div class="sdokus-ajax-request-method">
-                <label for="sdokus-ajax-request-method"><?php esc_html_e( 'How Do You Want to Get Events?', 'sdokus-demo-ajax-inspector' ); ?></label>
+                <label for="sdokus-ajax-request-method"><?php esc_html_e( 'How Do You Want to Get Events?', 'sdokus-ajax-inspector' ); ?></label>
                 <select name="sdokus-ajax-request-method" id="sdokus-ajax-request-method">
-                    <option value="orm"><?php esc_html_e( 'ORM', 'sdokus-demo-ajax-inspector' ); ?></option>
-                    <option value="api"><?php esc_html_e( 'API', 'sdokus-demo-ajax-inspector' ); ?></option>
+                    <option value="orm"><?php esc_html_e( 'ORM', 'sdokus-ajax-inspector' ); ?></option>
+                    <option value="api"><?php esc_html_e( 'API', 'sdokus-ajax-inspector' ); ?></option>
                 </select>
             </div>
 
